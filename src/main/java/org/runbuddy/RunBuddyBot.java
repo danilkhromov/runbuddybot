@@ -2,6 +2,8 @@ package org.runbuddy;
 
 import org.runbuddy.commands.Commands;
 import org.runbuddy.callbackqueries.CallbackQueries;
+import org.runbuddy.messagehandling.MessageBuilder;
+import org.runbuddy.messagehandling.MessageHandler;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -10,7 +12,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 /**
  * Created by Daniil Khromov.
  */
-class RunBuddyBot extends TelegramLongPollingBot {
+public class RunBuddyBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -41,14 +43,18 @@ class RunBuddyBot extends TelegramLongPollingBot {
                         .createKeyboard()
                         .setText("Привет! " +
                                         "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +
-                                        "если ты ответишь на несколько вопросов.")
-                        .sendMessage();
+                                        "если ты ответишь на несколько вопросов.");
+                try {
+                    MessageHandler messageHandler = new MessageHandler(answer);
+                    messageHandler.sendAnswer(answer);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (update.hasCallbackQuery()) {
             String callbackQuery = update.getCallbackQuery().getData();
             String chatId = String.valueOf(update.getCallbackQuery().getMessage().getChatId());
             int messageId = update.getCallbackQuery().getMessage().getMessageId();
-            boolean delete = true;
 
             MessageBuilder answer;
 
@@ -60,8 +66,7 @@ class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Женщина", CallbackQueries.WOMEN)
                             .buttonsInRow(2)
                             .createKeyboard()
-                            .setText("Укажи свой пол")
-                            .sendMessage();
+                            .setText("Укажи свой пол");
                     break;
                 case CallbackQueries.MEN:
                 case CallbackQueries.WOMEN:
@@ -70,8 +75,7 @@ class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Больше 80кг", CallbackQueries.MORE_THAN_80)
                             .buttonsInRow(2)
                             .createKeyboard()
-                            .setText("Твой вес")
-                            .sendMessage();
+                            .setText("Твой вес");
                     break;
                 case CallbackQueries.LESS_THAN_80:
                 case CallbackQueries.MORE_THAN_80:
@@ -82,8 +86,7 @@ class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Плоская стопа", CallbackQueries.FLAT_FOOT_ARCH)
                             .buttonsInRow(2)
                             .createKeyboard()
-                            .setText("Тип стопы")
-                            .sendMessage();
+                            .setText("Тип стопы");
                     break;
                 case CallbackQueries.HIGH_FOOT_ARCH:
                 case CallbackQueries.MEDIUM_FOOT_ARCH:
@@ -94,8 +97,7 @@ class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Скорость", CallbackQueries.SPEED)
                             .buttonsInRow(2)
                             .createKeyboard()
-                            .setText("Расстояние или скорость?")
-                            .sendMessage();
+                            .setText("Расстояние или скорость?");
                     break;
                 case CallbackQueries.DISTANCE:
                 case CallbackQueries.SPEED:
@@ -104,8 +106,7 @@ class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Пересеченная местность", CallbackQueries.OFF_ROAD)
                             .buttonsInRow(2)
                             .createKeyboard()
-                            .setText("Асфальт или пересеченная местность?")
-                            .sendMessage();
+                            .setText("Асфальт или пересеченная местность?");
                     break;
                 case CallbackQueries.ROAD:
                 case CallbackQueries.OFF_ROAD:
@@ -117,23 +118,19 @@ class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Меню", CallbackQueries.MENU)
                             .buttonsInRow(1)
                             .createKeyboard()
-                            .setText("Здесь должен быть кроссовок далее кнопки не работают")
-                            .sendMessage();
+                            .setText("Здесь должен быть кроссовок далее кнопки не работают");
                     break;
                 default:
                     answer = new MessageBuilder(chatId)
-                            .setText("Что-то пошло не так, попробуйте снова")
-                            .sendMessage();
-                    delete = false;
+                            .setText("Что-то пошло не так, попробуйте снова");
                     break;
+            }
 
-                /*if (delete) {
-                    try {
-                        answer.deletePreviousMessage(messageId);
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
-                }*/
+            try {
+                MessageHandler messageHandler = new MessageHandler(answer);
+                messageHandler.sendAnswer(answer);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
             }
         }
     }
