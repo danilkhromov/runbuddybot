@@ -31,22 +31,18 @@ class RunBuddyBot extends TelegramLongPollingBot {
         return "443181452:AAGdpxqqJfejzLkuL3SQL8VSPZ_9rug91TM";
     }
 
-    void commandHandler(Update update) {
+    void commandHandler(Update update) throws TelegramApiException {
         if (update.hasMessage()) {
             Message msg = update.getMessage();
             if (msg.getText().equals(Commands.START_COMMAND)) {
-                InlineKeyboardCreator answer = new InlineKeyboardCreator("Привет! " +
-                        "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +
-                        "если ты ответишь на несколько вопросов.", msg.getChatId().toString(),
-                        1);
-                answer.addButton("Начать", CallbackQueries.START_QUERY);
-                answer.addButton("Меню", CallbackQueries.MENU);
-                answer.createKeyboard();
-                try {
-                    sendMessage(answer.getKeyboard());
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
+                MessageBuilder answer = new MessageBuilder(msg.getChatId().toString())
+                        .addButton("Начать", CallbackQueries.START_QUERY)
+                        .addButton("Меню", CallbackQueries.MENU)
+                        .createKeyboard()
+                        .setText("Привет! " +
+                                        "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +
+                                        "если ты ответишь на несколько вопросов.")
+                        .sendMessage();
             }
         } else if (update.hasCallbackQuery()) {
             String callbackQuery = update.getCallbackQuery().getData();
@@ -54,82 +50,91 @@ class RunBuddyBot extends TelegramLongPollingBot {
             int messageId = update.getCallbackQuery().getMessage().getMessageId();
             boolean delete = true;
 
-            InlineKeyboardCreator answer;
+            MessageBuilder answer;
 
             switch (callbackQuery) {
                 case CallbackQueries.START_QUERY:
                 case CallbackQueries.RESET:
-                    answer = new InlineKeyboardCreator("Укажи свой пол", chatId, 2);
-                    answer.addButton("Мужчина", CallbackQueries.MEN);
-                    answer.addButton("Женщина", CallbackQueries.WOMEN);
+                    answer = new MessageBuilder(chatId)
+                            .addButton("Мужчина", CallbackQueries.MEN)
+                            .addButton("Женщина", CallbackQueries.WOMEN)
+                            .buttonsInRow(2)
+                            .createKeyboard()
+                            .setText("Укажи свой пол")
+                            .sendMessage();
                     break;
                 case CallbackQueries.MEN:
                 case CallbackQueries.WOMEN:
-                    answer = new InlineKeyboardCreator("Твой вес", chatId, 2);
-                    answer.addButton("Меньше 80кг", CallbackQueries.LESS_THAN_80);
-                    answer.addButton("Больше 80кг", CallbackQueries.MORE_THAN_80);
+                    answer = new MessageBuilder(chatId)
+                            .addButton("Меньше 80кг", CallbackQueries.LESS_THAN_80)
+                            .addButton("Больше 80кг", CallbackQueries.MORE_THAN_80)
+                            .buttonsInRow(2)
+                            .createKeyboard()
+                            .setText("Твой вес")
+                            .sendMessage();
                     break;
                 case CallbackQueries.LESS_THAN_80:
                 case CallbackQueries.MORE_THAN_80:
-                    answer = new InlineKeyboardCreator("Тип стопы", chatId,
-                            2);
-                    answer.addButton("Стопа с высоким подъемом", CallbackQueries.HIGH_FOOT_ARCH);
-                    answer.addButton("Стопа со средним подъемом", CallbackQueries.MEDIUM_FOOT_ARCH);
-                    answer.addButton("Стопа с низким подъемом", CallbackQueries.LOW_FOOT_ARCH);
-                    answer.addButton("Плоская стопа", CallbackQueries.FLAT_FOOT_ARCH);
+                    answer = new MessageBuilder(chatId)
+                            .addButton("Стопа с высоким подъемом", CallbackQueries.HIGH_FOOT_ARCH)
+                            .addButton("Стопа со средним подъемом", CallbackQueries.MEDIUM_FOOT_ARCH)
+                            .addButton("Стопа с низким подъемом", CallbackQueries.LOW_FOOT_ARCH)
+                            .addButton("Плоская стопа", CallbackQueries.FLAT_FOOT_ARCH)
+                            .buttonsInRow(2)
+                            .createKeyboard()
+                            .setText("Тип стопы")
+                            .sendMessage();
                     break;
                 case CallbackQueries.HIGH_FOOT_ARCH:
                 case CallbackQueries.MEDIUM_FOOT_ARCH:
                 case CallbackQueries.LOW_FOOT_ARCH:
                 case CallbackQueries.FLAT_FOOT_ARCH:
-                    answer = new InlineKeyboardCreator("Расстояние или скорость?", chatId, 2);
-                    answer.addButton("Расстояние", CallbackQueries.DISTANCE);
-                    answer.addButton("Скорость", CallbackQueries.SPEED);
+                    answer = new MessageBuilder(chatId)
+                            .addButton("Расстояние", CallbackQueries.DISTANCE)
+                            .addButton("Скорость", CallbackQueries.SPEED)
+                            .buttonsInRow(2)
+                            .createKeyboard()
+                            .setText("Расстояние или скорость?")
+                            .sendMessage();
                     break;
                 case CallbackQueries.DISTANCE:
                 case CallbackQueries.SPEED:
-                    answer = new InlineKeyboardCreator("Асфальт или пересеченная местность?", chatId,
-                            2);
-                    answer.addButton("Асфальт", CallbackQueries.ROAD);
-                    answer.addButton("Пересеченная местность", CallbackQueries.OFF_ROAD);
+                    answer = new MessageBuilder(chatId)
+                            .addButton("Асфальт", CallbackQueries.ROAD)
+                            .addButton("Пересеченная местность", CallbackQueries.OFF_ROAD)
+                            .buttonsInRow(2)
+                            .createKeyboard()
+                            .setText("Асфальт или пересеченная местность?")
+                            .sendMessage();
                     break;
                 case CallbackQueries.ROAD:
                 case CallbackQueries.OFF_ROAD:
                 case CallbackQueries.ANOTHER:
-                    answer = new InlineKeyboardCreator("Здесь должен быть кроссовок" +
-                            "(далее кнопки не работают)", chatId,
-                            1);
-                    answer.addButton("Другой кроссовок", CallbackQueries.ANOTHER);
-                    answer.addButton("Посмотреть в магазине", CallbackQueries.WATCH_IN_STORE);
-                    answer.addButton("Пройти заново", CallbackQueries.RESET);
-                    answer.addButton("Меню", CallbackQueries.MENU);
+                    answer = new MessageBuilder(chatId)
+                            .addButton("Другой кроссовок", CallbackQueries.ANOTHER)
+                            .addButton("Посмотреть в магазине", CallbackQueries.WATCH_IN_STORE)
+                            .addButton("Пройти заново", CallbackQueries.RESET)
+                            .addButton("Меню", CallbackQueries.MENU)
+                            .buttonsInRow(1)
+                            .createKeyboard()
+                            .setText("Здесь должен быть кроссовок далее кнопки не работают")
+                            .sendMessage();
                     break;
                 default:
-                    answer = new InlineKeyboardCreator("Что-то пошло не так, попробуйте снова", chatId);
+                    answer = new MessageBuilder(chatId)
+                            .setText("Что-то пошло не так, попробуйте снова")
+                            .sendMessage();
                     delete = false;
                     break;
 
+                /*if (delete) {
+                    try {
+                        answer.deletePreviousMessage(messageId);
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+                }*/
             }
-
-            answer.createKeyboard();
-
-            if (delete) {
-                try {
-                    sendMessage(answer.getKeyboard());
-                    deleteMessage(answer.deleteMessage(chatId, messageId));
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    sendMessage(answer.getKeyboard());
-                    deleteMessage(answer.deleteMessage(chatId, messageId));
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
         }
     }
 }
