@@ -3,7 +3,7 @@ package org.runbuddy.messagehandling;
 /**
  * Created by Daniil Khromov.
  */
-public enum SendType {
+enum SendType {
     TEXT,
     PHOTO
 }

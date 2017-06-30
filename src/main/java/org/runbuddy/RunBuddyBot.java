@@ -61,7 +61,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
             switch (callbackQuery) {
                 case CallbackQueries.START_QUERY:
                 case CallbackQueries.RESET:
-                    answer = new MessageBuilder(chatId)
+                    answer = new MessageBuilder(chatId, messageId)
                             .addButton("Мужчина", CallbackQueries.MEN)
                             .addButton("Женщина", CallbackQueries.WOMEN)
                             .buttonsInRow(2)
@@ -70,7 +70,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                     break;
                 case CallbackQueries.MEN:
                 case CallbackQueries.WOMEN:
-                    answer = new MessageBuilder(chatId)
+                    answer = new MessageBuilder(chatId, messageId)
                             .addButton("Меньше 80кг", CallbackQueries.LESS_THAN_80)
                             .addButton("Больше 80кг", CallbackQueries.MORE_THAN_80)
                             .buttonsInRow(2)
@@ -79,7 +79,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                     break;
                 case CallbackQueries.LESS_THAN_80:
                 case CallbackQueries.MORE_THAN_80:
-                    answer = new MessageBuilder(chatId)
+                    answer = new MessageBuilder(chatId, messageId)
                             .addButton("Стопа с высоким подъемом", CallbackQueries.HIGH_FOOT_ARCH)
                             .addButton("Стопа со средним подъемом", CallbackQueries.MEDIUM_FOOT_ARCH)
                             .addButton("Стопа с низким подъемом", CallbackQueries.LOW_FOOT_ARCH)
@@ -92,7 +92,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                 case CallbackQueries.MEDIUM_FOOT_ARCH:
                 case CallbackQueries.LOW_FOOT_ARCH:
                 case CallbackQueries.FLAT_FOOT_ARCH:
-                    answer = new MessageBuilder(chatId)
+                    answer = new MessageBuilder(chatId, messageId)
                             .addButton("Расстояние", CallbackQueries.DISTANCE)
                             .addButton("Скорость", CallbackQueries.SPEED)
                             .buttonsInRow(2)
@@ -101,7 +101,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                     break;
                 case CallbackQueries.DISTANCE:
                 case CallbackQueries.SPEED:
-                    answer = new MessageBuilder(chatId)
+                    answer = new MessageBuilder(chatId, messageId)
                             .addButton("Асфальт", CallbackQueries.ROAD)
                             .addButton("Пересеченная местность", CallbackQueries.OFF_ROAD)
                             .buttonsInRow(2)
@@ -111,7 +111,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                 case CallbackQueries.ROAD:
                 case CallbackQueries.OFF_ROAD:
                 case CallbackQueries.ANOTHER:
-                    answer = new MessageBuilder(chatId)
+                    answer = new MessageBuilder(chatId, messageId)
                             .addButton("Другой кроссовок", CallbackQueries.ANOTHER)
                             .addButton("Посмотреть в магазине", CallbackQueries.WATCH_IN_STORE)
                             .addButton("Пройти заново", CallbackQueries.RESET)

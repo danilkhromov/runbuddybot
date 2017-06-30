@@ -23,5 +23,9 @@ public class MessageHandler extends RunBuddyBot {
                 sendPhoto(answer.getPhoto());
                 break;
         }
+
+        if (answer.getFlag()) {
+            deleteMessage(answer.getDelete());
+        }
     }
 }
