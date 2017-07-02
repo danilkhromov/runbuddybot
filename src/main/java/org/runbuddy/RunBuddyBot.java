@@ -66,7 +66,8 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Женщина", CallbackQueries.WOMEN)
                             .buttonsInRow(2)
                             .createKeyboard()
-                            .setText("Укажи свой пол");
+                            .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlT2g0QTlYNE41SFE/view?usp=sharing",
+                                    "Укажи свой пол");
                     break;
                 case CallbackQueries.MEN:
                 case CallbackQueries.WOMEN:
@@ -75,7 +76,8 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Больше 80кг", CallbackQueries.MORE_THAN_80)
                             .buttonsInRow(2)
                             .createKeyboard()
-                            .setText("Твой вес");
+                            .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlMVFIOElrWldEdWM/view?usp=sharing"
+                                    ,"Твой вес");
                     break;
                 case CallbackQueries.LESS_THAN_80:
                 case CallbackQueries.MORE_THAN_80:
@@ -86,7 +88,8 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Плоская стопа", CallbackQueries.FLAT_FOOT_ARCH)
                             .buttonsInRow(2)
                             .createKeyboard()
-                            .setText("Тип стопы");
+                            .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlNlM0cmdSdmxQeUk/view?usp=sharing",
+                                    "Тип стопы");
                     break;
                 case CallbackQueries.HIGH_FOOT_ARCH:
                 case CallbackQueries.MEDIUM_FOOT_ARCH:
@@ -97,7 +100,8 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Скорость", CallbackQueries.SPEED)
                             .buttonsInRow(2)
                             .createKeyboard()
-                            .setText("Расстояние или скорость?");
+                            .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlRWVGcXdhQk5NUmc/view?usp=sharing",
+                                    "Расстояние или скорость?");
                     break;
                 case CallbackQueries.DISTANCE:
                 case CallbackQueries.SPEED:
@@ -106,7 +110,8 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Пересеченная местность", CallbackQueries.OFF_ROAD)
                             .buttonsInRow(2)
                             .createKeyboard()
-                            .setText("Асфальт или пересеченная местность?");
+                            .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlbkpGTVcwZDlUOUE/view?usp=sharing",
+                                    "Асфальт или пересеченная местность?");
                     break;
                 case CallbackQueries.ROAD:
                 case CallbackQueries.OFF_ROAD:

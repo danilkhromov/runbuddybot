@@ -68,8 +68,11 @@ public class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder setPhoto(String url) {
-        photo = new SendPhoto().setPhoto(url).setChatId(chatId)
+    public MessageBuilder setPhoto(String url, String caption) {
+        photo = new SendPhoto()
+                .setPhoto(url)
+                .setCaption(caption)
+                .setChatId(chatId)
                 .setReplyMarkup(keyboardMarkup);
         type = SendType.PHOTO;
         return this;
