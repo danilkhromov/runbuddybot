@@ -7,7 +7,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 /**
  * Created by Daniil Khromov.
  */
-class Application {
+class RunBuddyStarter {
     public static void main(String[] args) {
         ApiContextInitializer.init();
 
