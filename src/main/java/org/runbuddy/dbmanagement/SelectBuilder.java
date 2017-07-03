@@ -3,30 +3,29 @@ package org.runbuddy.dbmanagement;
 /**
  * Created by Danil Khromov.
  */
-public class QueryBuilder {
+public class SelectBuilder {
     private String query;
 
-    public QueryBuilder select(String query) {
-        this.query = "SELCET " + query;
+    SelectBuilder(String conditions) {
+        query = "SELECT " + conditions;
+    }
+
+    public SelectBuilder from(String condition) {
+        query = "FROM " + condition;
         return this;
     }
 
-    public QueryBuilder from(String query) {
-        this.query = "FROM " + query;
-        return this;
-    }
-
-    public QueryBuilder where(String condition) {
+    public SelectBuilder where(String condition) {
         query = "WHERE " + condition;
         return this;
     }
 
-    public QueryBuilder orderBy(String condition) {
+    public SelectBuilder orderBy(String condition) {
         query = "ORDER BY " + condition;
         return this;
     }
 
-    public QueryBuilder innerJoin(String condition) {
+    public SelectBuilder innerJoin(String condition) {
         query = "INNER JOIN " + condition;
         return this;
     }

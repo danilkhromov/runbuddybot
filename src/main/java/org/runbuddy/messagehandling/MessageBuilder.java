@@ -18,7 +18,7 @@ public class MessageBuilder {
     private DeleteMessage delete;
     private SendType type;
 
-    private boolean flag;
+    private boolean flag; // deleteLast deletePrevious
     private int buttonsInRow = 1;
     private String chatId;
     private final List<InlineKeyboardButton> buttonList = new ArrayList<>();
@@ -57,6 +57,9 @@ public class MessageBuilder {
     }
 
     public MessageBuilder buttonsInRow(int buttonsInRow) {
+        if (buttonsInRow < 1) {
+            throw new IllegalArgumentException("Buttons in row should be a positive number");
+        }
         this.buttonsInRow = buttonsInRow;
         return this;
     }
