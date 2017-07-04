@@ -1,4 +1,4 @@
-package org.runbuddy.dbmanagement;
+package org.runbuddy.database;
 
 /**
  * Created by Daniil Khromov.

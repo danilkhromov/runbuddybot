@@ -1,4 +1,4 @@
-package org.runbuddy.callbackqueries;
+package org.runbuddy.callbacks;
 
 /**
  * Created by Daniil Khromov.

@@ -1,4 +1,4 @@
-package org.runbuddy.messagehandling;
+package org.runbuddy.messaging;
 
 import org.junit.Assert;
 import org.junit.Test;

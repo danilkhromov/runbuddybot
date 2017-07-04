@@ -1,9 +1,9 @@
 package org.runbuddy;
 
 import org.runbuddy.commands.Commands;
-import org.runbuddy.callbackqueries.CallbackQueries;
-import org.runbuddy.messagehandling.MessageBuilder;
-import org.runbuddy.messagehandling.MessageHandler;
+import org.runbuddy.callbacks.CallbackQueries;
+import org.runbuddy.messaging.MessageBuilder;
+import org.runbuddy.messaging.MessageHandler;
 import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
