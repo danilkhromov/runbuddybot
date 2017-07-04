@@ -40,7 +40,6 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                 MessageBuilder answer = new MessageBuilder(msg.getChatId().toString())
                         .addButton("Начать", CallbackQueries.START_QUERY)
                         .addButton("Меню", CallbackQueries.MENU)
-                        .createKeyboard()
                         .setText("Привет! " +
                                         "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +
                                         "если ты ответишь на несколько вопросов.");
@@ -65,7 +64,6 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Мужчина", CallbackQueries.MEN)
                             .addButton("Женщина", CallbackQueries.WOMEN)
                             .buttonsInRow(2)
-                            .createKeyboard()
                             .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlT2g0QTlYNE41SFE/view?usp=sharing",
                                     "Укажи свой пол");
                     break;
@@ -75,7 +73,6 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Меньше 80кг", CallbackQueries.LESS_THAN_80)
                             .addButton("Больше 80кг", CallbackQueries.MORE_THAN_80)
                             .buttonsInRow(2)
-                            .createKeyboard()
                             .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlMVFIOElrWldEdWM/view?usp=sharing"
                                     ,"Твой вес");
                     break;
@@ -87,7 +84,6 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Стопа с низким подъемом", CallbackQueries.LOW_FOOT_ARCH)
                             .addButton("Плоская стопа", CallbackQueries.FLAT_FOOT_ARCH)
                             .buttonsInRow(2)
-                            .createKeyboard()
                             .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlNlM0cmdSdmxQeUk/view?usp=sharing",
                                     "Тип стопы");
                     break;
@@ -99,7 +95,6 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Расстояние", CallbackQueries.DISTANCE)
                             .addButton("Скорость", CallbackQueries.SPEED)
                             .buttonsInRow(2)
-                            .createKeyboard()
                             .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlRWVGcXdhQk5NUmc/view?usp=sharing",
                                     "Расстояние или скорость?");
                     break;
@@ -109,7 +104,6 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Асфальт", CallbackQueries.ROAD)
                             .addButton("Пересеченная местность", CallbackQueries.OFF_ROAD)
                             .buttonsInRow(2)
-                            .createKeyboard()
                             .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlbkpGTVcwZDlUOUE/view?usp=sharing",
                                     "Асфальт или пересеченная местность?");
                     break;
@@ -122,7 +116,6 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Пройти заново", CallbackQueries.RESET)
                             .addButton("Меню", CallbackQueries.MENU)
                             .buttonsInRow(1)
-                            .createKeyboard()
                             .setText("Здесь должен быть кроссовок далее кнопки не работают");
                     break;
                 default:

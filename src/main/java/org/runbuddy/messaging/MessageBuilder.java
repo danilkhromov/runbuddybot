@@ -65,6 +65,7 @@ public class MessageBuilder {
     }
 
     public MessageBuilder setText(String text) {
+        createKeyboard();
         message = new SendMessage(chatId, text)
                 .setReplyMarkup(keyboardMarkup);
         type = SendType.TEXT;
@@ -72,6 +73,7 @@ public class MessageBuilder {
     }
 
     public MessageBuilder setPhoto(String url, String caption) {
+        createKeyboard();
         photo = new SendPhoto()
                 .setPhoto(url)
                 .setCaption(caption)
@@ -86,7 +88,7 @@ public class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder createKeyboard() {
+    void createKeyboard() {
         keyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> buttonRows = new ArrayList<>();
 
@@ -95,6 +97,5 @@ public class MessageBuilder {
         }
 
         keyboardMarkup.setKeyboard(buttonRows);
-        return this;
     }
 }

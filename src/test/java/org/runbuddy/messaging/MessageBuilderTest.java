@@ -25,7 +25,6 @@ public class MessageBuilderTest {
         SendPhoto photo = new MessageBuilder(chatId)
                 .addButton(label1, "result1")
                 .addButton(label2, "result2")
-                .createKeyboard()
                 .setPhoto("url", "caption")
                 .getPhoto();
         Assert.assertEquals(chatId, photo.getChatId());
@@ -41,7 +40,6 @@ public class MessageBuilderTest {
     public void testNegativeRowSize() {
         new MessageBuilder("")
                 .buttonsInRow(-1)
-                .createKeyboard()
                 .getPhoto();
     }
 }
