@@ -18,26 +18,26 @@ public class MessageBuilder {
     private DeleteMessage delete;
     private SendType type;
 
-    private boolean flag; // deleteLast deletePrevious
+    private boolean deletePrevious; // deleteLast deletePrevious
     private int buttonsInRow = 1;
     private String chatId;
     private final List<InlineKeyboardButton> buttonList = new ArrayList<>();
 
     public MessageBuilder(String chatId) {
         this.chatId = chatId;
-        flag = false;
+        deletePrevious = false;
     }
 
     public MessageBuilder(String chatId, int messageId) {
         this.chatId = chatId;
-        flag = true;
+        deletePrevious = true;
         delete = new DeleteMessage()
                 .setChatId(chatId)
                 .setMessageId(messageId);
     }
 
-    boolean getFlag() {
-        return flag;
+    boolean getDeletePrevious() {
+        return deletePrevious;
     }
 
     SendType getType() {
@@ -88,7 +88,7 @@ public class MessageBuilder {
         return this;
     }
 
-    void createKeyboard() {
+    private void createKeyboard() {
         keyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> buttonRows = new ArrayList<>();
 
