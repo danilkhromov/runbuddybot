@@ -40,5 +40,5 @@ public class CreationQueries {
     static final String CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS users(" +
             "user_id integer, " +
             "chat_id integer, " +
-            "PRIMARY KEY (chat_id, user_id)";
+            "PRIMARY KEY (chat_id, user_id))";
 }

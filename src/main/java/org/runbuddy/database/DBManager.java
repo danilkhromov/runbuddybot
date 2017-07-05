@@ -1,9 +1,7 @@
 package org.runbuddy.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Queue;
 
 /**
  * Created by Danil Khromov.
@@ -29,6 +27,9 @@ public class DBManager {
 
             query = CreationQueries.CREATE_ROAD_TABLE;
             statement.executeUpdate(query);
+
+            query = CreationQueries.CREATE_USERS_TABLE;
+            statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -45,7 +46,13 @@ public class DBManager {
                 .innerJoin("road").on("road.model = shoes.model");
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:runbuddybot.db");
         Statement statement = connection.createStatement()) {
-            statement.executeQuery(queryBuilder.getQuery());
+            try (ResultSet resultSet = statement.executeQuery(queryBuilder.getQuery())) {
+                while(resultSet.next()) {
+
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
