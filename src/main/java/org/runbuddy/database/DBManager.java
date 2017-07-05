@@ -17,14 +17,10 @@ public class DBManager {
                 .from("shoes")
                 .where(result)
                 .orderBy("RANDOM()")
-                .innerJoin("weight")
-                .on("weight.model = shoes.model")
-                .innerJoin("arch")
-                .on("arch.model = shoes.model")
-                .innerJoin("type")
-                .on("type.model = shoes.model")
-                .innerJoin("road")
-                .on("road.model = shoes.model");
+                .innerJoin("weight").on("weight.model = shoes.model")
+                .innerJoin("arch").on("arch.model = shoes.model")
+                .innerJoin("type").on("type.model = shoes.model")
+                .innerJoin("road").on("road.model = shoes.model");
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:runbuddybot.db");
         Statement statement = connection.createStatement()) {
             statement.executeQuery(queryBuilder.getQuery());
