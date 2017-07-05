@@ -1,5 +1,6 @@
 package org.runbuddy;
 
+import org.runbuddy.database.DBManager;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
@@ -8,7 +9,13 @@ import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
  * Created by Daniil Khromov.
  */
 class RunBuddyStarter {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
+
+        Class.forName("org.sqlite.JDBC");
+
+        DBManager dbManager = new DBManager();
+        dbManager.createTables();
+
         ApiContextInitializer.init();
 
         TelegramBotsApi botsApi = new TelegramBotsApi();

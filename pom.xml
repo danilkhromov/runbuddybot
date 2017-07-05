@@ -30,7 +30,6 @@
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.19.3</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
