@@ -38,7 +38,7 @@ class CreationQueries {
             "FOREIGN KEY (model) REFERENCES shoes (model) " +
             "ON DELETE CASCADE ON UPDATE NO ACTION)";
     static final String CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS users(" +
-            "user_id integer, " +
             "chat_id integer, " +
+            "user_id integer, " +
             "PRIMARY KEY (chat_id, user_id))";
 }

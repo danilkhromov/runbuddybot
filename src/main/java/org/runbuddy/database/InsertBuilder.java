@@ -24,9 +24,9 @@ class InsertBuilder {
 
     InsertBuilder values(String... values) {
         query.append("VALUES (");
-        for (String value:values) {
-            query.append(value);
-            if (!value.equals(values[values.length-1])) {
+        for (int i = 0; i < values.length; i++) {
+            query.append(values[i]);
+            if (i != values.length - 1) {
                 query.append(", ");
             } else {
                 query.append(")");

@@ -2,6 +2,7 @@ package org.runbuddy;
 
 import org.runbuddy.commands.Commands;
 import org.runbuddy.callbacks.CallbackQueries;
+import org.runbuddy.database.DBManager;
 import org.runbuddy.messaging.MessageBuilder;
 import org.runbuddy.messaging.MessageHandler;
 import org.telegram.telegrambots.api.objects.Message;
@@ -43,6 +44,8 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                         .setText("Привет! " +
                                         "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +
                                         "если ты ответишь на несколько вопросов.");
+                DBManager dbManager = new DBManager();
+                dbManager.addUser(msg.getChatId().toString(), msg.getFrom().getId().toString());
                 try {
                     MessageHandler messageHandler = new MessageHandler(answer);
                     messageHandler.sendAnswer(answer);

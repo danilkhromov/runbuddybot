@@ -7,6 +7,9 @@ import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 
 /**
  * Created by Daniil Khromov.
+ * TODO database interaction classes
+ * TODO select & insert methods for DBManager
+ * TODO unit tests for builder classes and DBManager
  */
 class RunBuddyStarter {
     public static void main(String[] args) throws ClassNotFoundException {

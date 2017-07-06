@@ -1,7 +1,9 @@
 package org.runbuddy.database;
 
+import org.sqlite.SQLiteErrorCode;
+import org.sqlite.SQLiteException;
+
 import java.sql.*;
-import java.util.Queue;
 
 /**
  * Created by Danil Khromov.
@@ -29,6 +31,23 @@ public class DBManager {
             query = CreationQueries.CREATE_USERS_TABLE;
             statement.executeUpdate(query);
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addUser(String chatId, String userId) {
+        InsertBuilder insertUser = new InsertBuilder("users", "chat_id", "user_id")
+                .values(chatId, userId);
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:runbuddybot.db");
+        Statement statement = connection.createStatement()) {
+            statement.executeUpdate(insertUser.getInsert());
+        } catch (SQLiteException e) {
+            if (e.getResultCode().equals(SQLiteErrorCode.SQLITE_CONSTRAINT_PRIMARYKEY)) {
+                System.out.println("Record already exists");
+            } else {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
