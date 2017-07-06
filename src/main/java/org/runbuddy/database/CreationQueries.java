@@ -37,8 +37,16 @@ class CreationQueries {
             "trail boolean NOT NULL, " +
             "FOREIGN KEY (model) REFERENCES shoes (model) " +
             "ON DELETE CASCADE ON UPDATE NO ACTION)";
-    static final String CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS users(" +
+    static final String CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS users (" +
             "chat_id integer, " +
             "user_id integer, " +
             "PRIMARY KEY (chat_id, user_id))";
+    static final String CREATE_TEMP_TABLE = "CREATE TABLE IF NOT EXISTS temp (" +
+            "chat_id integer NIT NULL, " +
+            "user_id integer NOT NULL, " +
+            "model integer NOT NULL, " +
+            "timestamp text NOT NULL, " +
+            "PRIMARY KEY (chat_id, user_id, model) " +
+            "FOREIGN KEY (model) REFERENCES shoes (model) " +
+            "ON DELETE CASCADE ON UPDATE NO ACTION)";
 }

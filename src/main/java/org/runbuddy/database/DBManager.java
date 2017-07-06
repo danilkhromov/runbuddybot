@@ -30,6 +30,9 @@ public class DBManager {
 
             query = CreationQueries.CREATE_USERS_TABLE;
             statement.executeUpdate(query);
+
+            query = CreationQueries.CREATE_TEMP_TABLE;
+            statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
