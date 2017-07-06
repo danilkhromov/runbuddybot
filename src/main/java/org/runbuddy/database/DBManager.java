@@ -7,8 +7,6 @@ import java.util.Queue;
  * Created by Danil Khromov.
  */
 public class DBManager {
-    //private Connection connection;
-    //private Statement statement;
 
     public void createTables() {
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:runbuddybot.db");
@@ -36,7 +34,7 @@ public class DBManager {
     }
 
     public void getResult(String result) {
-        SelectBuilder queryBuilder = new SelectBuilder("model_name, url")
+        SelectBuilder queryBuilder = new SelectBuilder("model, name, photo_url, url")
                 .from("shoes")
                 .where(result)
                 .orderBy("RANDOM()")

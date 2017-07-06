@@ -3,7 +3,7 @@ package org.runbuddy.database;
 /**
  * Created by Daniil Khromov.
  */
-public class CreationQueries {
+class CreationQueries {
     //private static final String CREATE_STATEMENT = ""
     static final String CREATE_SHOES_TABLE = "CREATE TABLE IF NOT EXISTS shoes (" +
             "model integer PRIMARY KEY, " +
