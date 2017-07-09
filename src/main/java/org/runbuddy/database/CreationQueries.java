@@ -4,7 +4,6 @@ package org.runbuddy.database;
  * Created by Daniil Khromov.
  */
 class CreationQueries {
-    //private static final String CREATE_STATEMENT = ""
     static final String CREATE_SHOES_TABLE = "CREATE TABLE IF NOT EXISTS shoes (" +
             "model integer PRIMARY KEY, " +
             "name text NOT NULL, " +
@@ -26,7 +25,7 @@ class CreationQueries {
             "FOREIGN KEY (model) REFERENCES shoes (model) " +
             "ON DELETE CASCADE ON UPDATE NO ACTION)";
     static final String CREATE_TYPE_TABLE = "CREATE TABLE IF NOT EXISTS type (" +
-            "model integer PRIMARY KEY, " +
+            "model integer PRIMARY KEY NOT NULL, " +
             "speed boolean NOT NULL, " +
             "distance boolean NOT NULL, " +
             "FOREIGN KEY (model) REFERENCES shoes (model) " +
@@ -38,15 +37,15 @@ class CreationQueries {
             "FOREIGN KEY (model) REFERENCES shoes (model) " +
             "ON DELETE CASCADE ON UPDATE NO ACTION)";
     static final String CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS users (" +
-            "chat_id integer, " +
-            "user_id integer, " +
-            "PRIMARY KEY (chat_id, user_id))";
+            "user_id integer PRIMARY KEY)";
     static final String CREATE_TEMP_TABLE = "CREATE TABLE IF NOT EXISTS temp (" +
-            "chat_id integer NIT NULL, " +
             "user_id integer NOT NULL, " +
             "model integer NOT NULL, " +
+            "name text NOT NULL, " +
+            "photo_url text NOT NULL, " +
+            "url text NOT NULL, " +
             "timestamp text NOT NULL, " +
-            "PRIMARY KEY (chat_id, user_id, model) " +
+            "PRIMARY KEY (user_id, model) " +
             "FOREIGN KEY (model) REFERENCES shoes (model) " +
             "ON DELETE CASCADE ON UPDATE NO ACTION)";
 }

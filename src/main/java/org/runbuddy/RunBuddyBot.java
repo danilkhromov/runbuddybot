@@ -1,7 +1,6 @@
 package org.runbuddy;
 
 import org.runbuddy.commands.Commands;
-import org.runbuddy.callbacks.CallbackQueries;
 import org.runbuddy.database.DBManager;
 import org.runbuddy.messaging.MessageBuilder;
 import org.runbuddy.messaging.MessageHandler;
@@ -9,6 +8,8 @@ import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
+
+import static org.runbuddy.callbacks.CallbackQueries.*;
 
 /**
  * Created by Daniil Khromov.
@@ -39,8 +40,8 @@ public class RunBuddyBot extends TelegramLongPollingBot {
             Message msg = update.getMessage();
             if (msg.getText().equals(Commands.START_COMMAND)) {
                 MessageBuilder answer = new MessageBuilder(msg.getChatId().toString())
-                        .addButton("Начать", CallbackQueries.START_QUERY)
-                        .addButton("Меню", CallbackQueries.MENU)
+                        .addButton("Начать", START_QUERY)
+                        .addButton("Меню", MENU)
                         .setText("Привет! " +
                                         "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +
                                         "если ты ответишь на несколько вопросов.");
@@ -61,63 +62,63 @@ public class RunBuddyBot extends TelegramLongPollingBot {
             MessageBuilder answer;
 
             switch (callbackQuery) {
-                case CallbackQueries.START_QUERY:
-                case CallbackQueries.RESET:
+                case START_QUERY:
+                case RESET:
                     answer = new MessageBuilder(chatId, messageId)
-                            .addButton("Мужчина", CallbackQueries.MEN)
-                            .addButton("Женщина", CallbackQueries.WOMEN)
+                            .addButton("Мужчина", MEN)
+                            .addButton("Женщина", WOMEN)
                             .buttonsInRow(2)
                             .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlT2g0QTlYNE41SFE/view?usp=sharing",
                                     "Укажи свой пол");
                     break;
-                case CallbackQueries.MEN:
-                case CallbackQueries.WOMEN:
+                case MEN:
+                case WOMEN:
                     answer = new MessageBuilder(chatId, messageId)
-                            .addButton("Меньше 80кг", CallbackQueries.LESS_THAN_80)
-                            .addButton("Больше 80кг", CallbackQueries.MORE_THAN_80)
+                            .addButton("Меньше 80кг", LESS_THAN_80)
+                            .addButton("Больше 80кг", MORE_THAN_80)
                             .buttonsInRow(2)
                             .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlMVFIOElrWldEdWM/view?usp=sharing"
                                     ,"Твой вес");
                     break;
-                case CallbackQueries.LESS_THAN_80:
-                case CallbackQueries.MORE_THAN_80:
+                case LESS_THAN_80:
+                case MORE_THAN_80:
                     answer = new MessageBuilder(chatId, messageId)
-                            .addButton("Стопа с высоким подъемом", CallbackQueries.HIGH_FOOT_ARCH)
-                            .addButton("Стопа со средним подъемом", CallbackQueries.MEDIUM_FOOT_ARCH)
-                            .addButton("Стопа с низким подъемом", CallbackQueries.LOW_FOOT_ARCH)
-                            .addButton("Плоская стопа", CallbackQueries.FLAT_FOOT_ARCH)
+                            .addButton("Стопа с высоким подъемом", HIGH_FOOT_ARCH)
+                            .addButton("Стопа со средним подъемом", MEDIUM_FOOT_ARCH)
+                            .addButton("Стопа с низким подъемом", LOW_FOOT_ARCH)
+                            .addButton("Плоская стопа", FLAT_FOOT_ARCH)
                             .buttonsInRow(2)
                             .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlNlM0cmdSdmxQeUk/view?usp=sharing",
                                     "Тип стопы");
                     break;
-                case CallbackQueries.HIGH_FOOT_ARCH:
-                case CallbackQueries.MEDIUM_FOOT_ARCH:
-                case CallbackQueries.LOW_FOOT_ARCH:
-                case CallbackQueries.FLAT_FOOT_ARCH:
+                case HIGH_FOOT_ARCH:
+                case MEDIUM_FOOT_ARCH:
+                case LOW_FOOT_ARCH:
+                case FLAT_FOOT_ARCH:
                     answer = new MessageBuilder(chatId, messageId)
-                            .addButton("Расстояние", CallbackQueries.DISTANCE)
-                            .addButton("Скорость", CallbackQueries.SPEED)
+                            .addButton("Расстояние", DISTANCE)
+                            .addButton("Скорость", SPEED)
                             .buttonsInRow(2)
                             .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlRWVGcXdhQk5NUmc/view?usp=sharing",
                                     "Расстояние или скорость?");
                     break;
-                case CallbackQueries.DISTANCE:
-                case CallbackQueries.SPEED:
+                case DISTANCE:
+                case SPEED:
                     answer = new MessageBuilder(chatId, messageId)
-                            .addButton("Асфальт", CallbackQueries.ROAD)
-                            .addButton("Пересеченная местность", CallbackQueries.OFF_ROAD)
+                            .addButton("Асфальт", ROAD)
+                            .addButton("Пересеченная местность", OFF_ROAD)
                             .buttonsInRow(2)
                             .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlbkpGTVcwZDlUOUE/view?usp=sharing",
                                     "Асфальт или пересеченная местность?");
                     break;
-                case CallbackQueries.ROAD:
-                case CallbackQueries.OFF_ROAD:
-                case CallbackQueries.ANOTHER:
+                case ROAD:
+                case OFF_ROAD:
+                case ANOTHER:
                     answer = new MessageBuilder(chatId, messageId)
-                            .addButton("Другой кроссовок", CallbackQueries.ANOTHER)
-                            .addButton("Посмотреть в магазине", CallbackQueries.WATCH_IN_STORE)
-                            .addButton("Пройти заново", CallbackQueries.RESET)
-                            .addButton("Меню", CallbackQueries.MENU)
+                            .addButton("Другой кроссовок", ANOTHER)
+                            .addButton("Посмотреть в магазине", WATCH_IN_STORE)
+                            .addButton("Пройти заново", RESET)
+                            .addButton("Меню", MENU)
                             .buttonsInRow(1)
                             .setText("Здесь должен быть кроссовок далее кнопки не работают");
                     break;
