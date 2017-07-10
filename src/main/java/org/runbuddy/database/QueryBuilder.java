@@ -17,7 +17,7 @@ class QueryBuilder {
             if (!column.equals(columns[columns.length -1])) {
                 query.append(", ");
             } else {
-                query.append(") ");
+                query.append(")");
             }
         }
         return this;
@@ -36,6 +36,10 @@ class QueryBuilder {
         return this;
     }
 
+    QueryBuilder deleteFrom(String table) {
+        query.append("DELETE FROM ").append(table);
+        return this;
+    }
 
     QueryBuilder select(String... columns) {
         query = new StringBuilder()
@@ -45,7 +49,7 @@ class QueryBuilder {
             if (!column.equals(columns[columns.length -1])) {
                 query.append(", ");
             } else {
-                query.append(") ");
+                query.append(")");
             }
         }
         return this;

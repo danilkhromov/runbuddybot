@@ -2,6 +2,7 @@ package org.runbuddy;
 
 import org.runbuddy.commands.Commands;
 import org.runbuddy.database.DBManager;
+import org.runbuddy.database.TemporaryStorage;
 import org.runbuddy.messaging.MessageBuilder;
 import org.runbuddy.messaging.MessageHandler;
 import org.telegram.telegrambots.api.objects.Message;
@@ -63,6 +64,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
 
             switch (callbackQuery) {
                 case START_QUERY:
+                    TemporaryStorage.addEntry(String.valueOf(update.getMessage().getFrom().getId()));
                 case RESET:
                     answer = new MessageBuilder(chatId, messageId)
                             .addButton("Мужчина", MEN)

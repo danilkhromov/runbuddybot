@@ -41,7 +41,7 @@ public class DBManager {
 
     public void addUser(String chatId, String userId) {
         String insert = new QueryBuilder()
-                .insertInto("users", "chat_id", "user_id")
+                .insertInto("users", "user_id")
                 .values(chatId, userId)
                 .create();
         try (Connection connection = DriverManager.getConnection(connectionUrl);
@@ -113,7 +113,7 @@ public class DBManager {
     }
 
     public String[] getShoe(String userId) {
-        String[] shoe = new String[0];
+        String[] shoe = new String[3];
         String query = new QueryBuilder()
                 .select("model", "name", "photo_url", "url")
                 .from("temp")
@@ -123,13 +123,21 @@ public class DBManager {
         try (Connection connection = DriverManager.getConnection(connectionUrl);
         Statement statement = connection.createStatement()) {
             try (ResultSet resultSet = statement.executeQuery(query)) {
-                shoe[0] = resultSet.getString("model");
-                shoe[1] = resultSet.getString("name");
-                shoe[3] = resultSet.getString("photo_url");
-                shoe[4] = resultSet.getString("url");
+                String model = resultSet.getString("model");
+                shoe[0] = resultSet.getString("name");
+                shoe[1] = resultSet.getString("photo_url");
+                shoe[2] = resultSet.getString("url");
+
+                query = new QueryBuilder()
+                        .deleteFrom("temp")
+                        .where("user_id").eq(userId)
+                        .and("model").eq(model)
+                        .create();
+                statement.executeUpdate(query);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
