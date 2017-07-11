@@ -39,10 +39,10 @@ public class DBManager {
         }
     }
 
-    public void addUser(String chatId, String userId) {
+    public void addUser(String userId) {
         String insert = new QueryBuilder()
                 .insertInto("users", "user_id")
-                .values(chatId, userId)
+                .values(userId)
                 .create();
         try (Connection connection = DriverManager.getConnection(connectionUrl);
         Statement statement = connection.createStatement()) {
@@ -60,8 +60,7 @@ public class DBManager {
 
     private void addTempResult(String userId, String model, String name, String photoUrl, String url) {
         String insert = new QueryBuilder()
-                .insertInto("temp",
-                        "chat_id", "user_id", "model", "name", "photo_url", "url", "timestamp")
+                .insertInto("temp", "user_id", "model", "name", "photo_url", "url", "timestamp")
                 .values(userId, model, name, photoUrl, url, "datetime('now')")
                 .create();
         try (Connection connection = DriverManager.getConnection(connectionUrl);
@@ -79,29 +78,29 @@ public class DBManager {
     }
 
     public void getResult(String userId, String result) {
-        String[] conditions = result.split("\\s");
+        String[] conditions = result.split(",");
         String select = new QueryBuilder()
-                .select("model", "name", "photo_url", "url")
+                .select("shoes.model", "name", "photo_url", "url")
                 .from("shoes")
-                .where("gender").eq(conditions[0])
+                .innerJoin("weight").on("weight.model = shoes.model")
+                .innerJoin("arch").on("arch.model = shoes.model")
+                .innerJoin("type").on("type.model = shoes.model")
+                .innerJoin("road").on("road.model = shoes.model")
+                .where(conditions[0])
                 .and(conditions[1])
                 .and(conditions[2])
                 .and(conditions[3])
                 .and(conditions[4])
                 .orderBy("RANDOM()")
-                .innerJoin("weight").on("weight.model = shoes.model")
-                .innerJoin("arch").on("arch.model = shoes.model")
-                .innerJoin("type").on("type.model = shoes.model")
-                .innerJoin("road").on("road.model = shoes.model")
                 .create();
         try (Connection connection = DriverManager.getConnection(connectionUrl);
         Statement statement = connection.createStatement()) {
             try (ResultSet resultSet = statement.executeQuery(select)) {
                 while(resultSet.next()) {
-                    String model = resultSet.getString("model");
-                    String name = resultSet.getString("name");
-                    String photoUrl = resultSet.getString("photo_url");
-                    String url = resultSet.getString("url");
+                    String model = "'"+ resultSet.getString("model") + "'";
+                    String name = "'" + resultSet.getString("name") + "'";
+                    String photoUrl = "'" + resultSet.getString("photo_url") + "'";
+                    String url = "'" + resultSet.getString("url") + "'";
                     addTempResult(userId, model, name, photoUrl, url);
                 }
             } catch (SQLException e) {

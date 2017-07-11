@@ -24,7 +24,7 @@ class QueryBuilder {
     }
 
     QueryBuilder values(String... values) {
-        query.append("VALUES (");
+        query.append(" VALUES (");
         for (int i = 0; i < values.length; i++) {
             query.append(values[i]);
             if (i != values.length - 1) {
@@ -37,7 +37,9 @@ class QueryBuilder {
     }
 
     QueryBuilder deleteFrom(String table) {
-        query.append("DELETE FROM ").append(table);
+        query = new StringBuilder()
+                .append("DELETE FROM ")
+                .append(table);
         return this;
     }
 
@@ -48,8 +50,6 @@ class QueryBuilder {
             query.append(column);
             if (!column.equals(columns[columns.length -1])) {
                 query.append(", ");
-            } else {
-                query.append(")");
             }
         }
         return this;

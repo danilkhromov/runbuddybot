@@ -47,7 +47,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                                         "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +
                                         "если ты ответишь на несколько вопросов.");
                 DBManager dbManager = new DBManager();
-                dbManager.addUser(msg.getChatId().toString(), msg.getFrom().getId().toString());
+                dbManager.addUser(msg.getFrom().getId().toString());
                 try {
                     MessageHandler messageHandler = new MessageHandler(answer);
                     messageHandler.sendAnswer(answer);
@@ -57,6 +57,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
             }
         } else if (update.hasCallbackQuery()) {
             String callbackQuery = update.getCallbackQuery().getData();
+            String userId = String.valueOf(update.getCallbackQuery().getFrom().getId());
             String chatId = String.valueOf(update.getCallbackQuery().getMessage().getChatId());
             int messageId = update.getCallbackQuery().getMessage().getMessageId();
 
@@ -64,8 +65,8 @@ public class RunBuddyBot extends TelegramLongPollingBot {
 
             switch (callbackQuery) {
                 case START_QUERY:
-                    TemporaryStorage.addEntry(String.valueOf(update.getMessage().getFrom().getId()));
                 case RESET:
+                    TemporaryStorage.addEntry(userId);
                     answer = new MessageBuilder(chatId, messageId)
                             .addButton("Мужчина", MEN)
                             .addButton("Женщина", WOMEN)
@@ -75,6 +76,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                     break;
                 case MEN:
                 case WOMEN:
+                    TemporaryStorage.addAnswer(userId, callbackQuery);
                     answer = new MessageBuilder(chatId, messageId)
                             .addButton("Меньше 80кг", LESS_THAN_80)
                             .addButton("Больше 80кг", MORE_THAN_80)
@@ -84,6 +86,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                     break;
                 case LESS_THAN_80:
                 case MORE_THAN_80:
+                    TemporaryStorage.addAnswer(userId, callbackQuery);
                     answer = new MessageBuilder(chatId, messageId)
                             .addButton("Стопа с высоким подъемом", HIGH_FOOT_ARCH)
                             .addButton("Стопа со средним подъемом", MEDIUM_FOOT_ARCH)
@@ -97,6 +100,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                 case MEDIUM_FOOT_ARCH:
                 case LOW_FOOT_ARCH:
                 case FLAT_FOOT_ARCH:
+                    TemporaryStorage.addAnswer(userId, callbackQuery);
                     answer = new MessageBuilder(chatId, messageId)
                             .addButton("Расстояние", DISTANCE)
                             .addButton("Скорость", SPEED)
@@ -106,6 +110,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                     break;
                 case DISTANCE:
                 case SPEED:
+                    TemporaryStorage.addAnswer(userId, callbackQuery);
                     answer = new MessageBuilder(chatId, messageId)
                             .addButton("Асфальт", ROAD)
                             .addButton("Пересеченная местность", OFF_ROAD)
@@ -115,14 +120,19 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                     break;
                 case ROAD:
                 case OFF_ROAD:
+                    TemporaryStorage.addAnswer(userId, callbackQuery);
+                    String result = TemporaryStorage.getAnswers(userId);
+                    DBManager dbManager = new DBManager();
+                    dbManager.getResult(userId, result);
                 case ANOTHER:
+                    String shoe[] = new DBManager().getShoe(userId);
                     answer = new MessageBuilder(chatId, messageId)
                             .addButton("Другой кроссовок", ANOTHER)
-                            .addButton("Посмотреть в магазине", WATCH_IN_STORE)
+                            .addUrl("Посмотреть в магазине", shoe[2])
                             .addButton("Пройти заново", RESET)
                             .addButton("Меню", MENU)
                             .buttonsInRow(1)
-                            .setText("Здесь должен быть кроссовок далее кнопки не работают");
+                            .setPhoto(shoe[0], shoe[1]);
                     break;
                 default:
                     answer = new MessageBuilder(chatId)

@@ -15,12 +15,12 @@ public final class TemporaryStorage {
         quizData.put(userId, answers);
     }
 
-    public void addAnswer(String userId, String answer) {
+    public static void addAnswer(String userId, String answer) {
         StringBuilder answers = quizData.get(userId)
-                .append(answer).append(" ");
+                .append(answer).append(",");
     }
 
-    public String getAnswers(String userId) {
+    public static String getAnswers(String userId) {
         String answers = quizData.get(userId).toString();
         quizData.remove(userId);
         return answers;

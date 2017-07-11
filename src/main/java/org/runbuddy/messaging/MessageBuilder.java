@@ -18,7 +18,7 @@ public class MessageBuilder {
     private DeleteMessage delete;
     private SendType type;
 
-    private boolean deletePrevious; // deleteLast deletePrevious
+    private boolean deletePrevious;
     private int buttonsInRow = 1;
     private String chatId;
     private final List<InlineKeyboardButton> buttonList = new ArrayList<>();
@@ -85,6 +85,11 @@ public class MessageBuilder {
 
     public MessageBuilder addButton(String label, String callbackData) {
         buttonList.add(new InlineKeyboardButton().setText(label).setCallbackData(callbackData));
+        return this;
+    }
+
+    public MessageBuilder addUrl(String label, String url) {
+        buttonList.add(new InlineKeyboardButton().setText(label).setUrl(url));
         return this;
     }
 
