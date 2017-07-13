@@ -9,11 +9,20 @@ import java.sql.*;
  * Created by Danil Khromov.
  */
 public class DBManager {
-    private static final String connectionUrl = "jdbc:sqlite:runbuddybot.db";
+    private static final String DEFAULT_CONNECTION_URL = "jdbc:sqlite:runbuddybot.db";
+    private final String connectionUrl;
+
+    public DBManager() {
+        this(DEFAULT_CONNECTION_URL);
+    }
+
+    DBManager(String connectionUrl) {
+        this.connectionUrl = connectionUrl;
+    }
 
     public void createTables() {
-        try (Connection connection = DriverManager.getConnection(connectionUrl);
-        Statement statement = connection.createStatement()) {
+        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+             Statement statement = connection.createStatement()) {
             String query = CreationQueries.CREATE_SHOES_TABLE;
             statement.executeUpdate(query);
 
@@ -44,8 +53,8 @@ public class DBManager {
                 .insertInto("users", "user_id")
                 .values(userId)
                 .create();
-        try (Connection connection = DriverManager.getConnection(connectionUrl);
-        Statement statement = connection.createStatement()) {
+        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+             Statement statement = connection.createStatement()) {
             statement.executeUpdate(insert);
         } catch (SQLiteException e) {
             if (e.getResultCode().equals(SQLiteErrorCode.SQLITE_CONSTRAINT_PRIMARYKEY)) {
@@ -58,23 +67,12 @@ public class DBManager {
         }
     }
 
-    private void addTempResult(String userId, String model, String name, String photoUrl, String url) {
+    private void addTempResult(Statement statement, String userId, String model, String name, String photoUrl, String url) throws SQLException {
         String insert = new QueryBuilder()
                 .insertInto("temp", "user_id", "model", "name", "photo_url", "url", "timestamp")
                 .values(userId, model, name, photoUrl, url, "datetime('now')")
                 .create();
-        try (Connection connection = DriverManager.getConnection(connectionUrl);
-        Statement statement = connection.createStatement()) {
-            statement.executeUpdate(insert);
-        } catch (SQLiteException e) {
-            if (e.getResultCode().equals(SQLiteErrorCode.SQLITE_CONSTRAINT_PRIMARYKEY)) {
-                System.out.println("Record already exists");
-            } else {
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        statement.executeUpdate(insert);
     }
 
     public void getResult(String userId, String result) {
@@ -93,18 +91,16 @@ public class DBManager {
                 .and(conditions[4])
                 .orderBy("RANDOM()")
                 .create();
-        try (Connection connection = DriverManager.getConnection(connectionUrl);
-        Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery(select)) {
-                while(resultSet.next()) {
-                    String model = "'"+ resultSet.getString("model") + "'";
-                    String name = "'" + resultSet.getString("name") + "'";
-                    String photoUrl = "'" + resultSet.getString("photo_url") + "'";
-                    String url = "'" + resultSet.getString("url") + "'";
-                    addTempResult(userId, model, name, photoUrl, url);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(select)) {
+            while (resultSet.next()) {
+                String model = "'" + resultSet.getString("model") + "'";
+                String name = "'" + resultSet.getString("name") + "'";
+                String photoUrl = "'" + resultSet.getString("photo_url") + "'";
+                String url = "'" + resultSet.getString("url") + "'";
+
+                addTempResult(statement, userId, model, name, photoUrl, url);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,10 +115,11 @@ public class DBManager {
                 .where("user_id").eq(userId)
                 .limit(1)
                 .create();
-        try (Connection connection = DriverManager.getConnection(connectionUrl);
-        Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery(query)) {
-                String model = resultSet.getString("model");
+        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                String model = "'" + resultSet.getString("model") + "'";
                 shoe[0] = resultSet.getString("name");
                 shoe[1] = resultSet.getString("photo_url");
                 shoe[2] = resultSet.getString("url");
@@ -133,10 +130,7 @@ public class DBManager {
                         .and("model").eq(model)
                         .create();
                 statement.executeUpdate(query);
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

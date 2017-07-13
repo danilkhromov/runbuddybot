@@ -2,13 +2,15 @@ package org.runbuddy.database;
 
 import org.apache.commons.collections4.map.PassiveExpiringMap;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Danil Khromov.
  */
 public final class TemporaryStorage {
-    private static final Map<String, StringBuilder> quizData = new PassiveExpiringMap<>(1800000);
+    private static final Map<String, StringBuilder> quizData = new PassiveExpiringMap<>(TimeUnit.MINUTES.toMillis(30));
 
     public static void addEntry(String userId) {
         StringBuilder answers = new StringBuilder();
@@ -16,7 +18,7 @@ public final class TemporaryStorage {
     }
 
     public static void addAnswer(String userId, String answer) {
-        StringBuilder answers = quizData.get(userId)
+        quizData.get(userId)
                 .append(answer).append(",");
     }
 

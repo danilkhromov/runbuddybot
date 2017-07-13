@@ -22,19 +22,19 @@ public class QueryBuilderTest {
     public void select() {
         String expected = "SELECT column1, column2, column3 " +
                 "FROM table " +
+                "INNER JOIN table2 ON table2.column1 = table1.column1 " +
                 "WHERE this = that " +
                 "AND a = b " +
                 "ORDER BY RANDOM() " +
-                "LIMIT 10 " +
-                "INNER JOIN table2 ON table2.column1 = table1.column1";
+                "LIMIT 10";
         String created = new QueryBuilder()
                 .select("column1", "column2", "column3")
                 .from("table")
+                .innerJoin("table2").on("table2.column1").eq("table1.column1")
                 .where("this").eq("that")
                 .and("a").eq("b")
                 .orderBy("RANDOM()")
                 .limit(10)
-                .innerJoin("table2").on("table2.column1").eq("table1.column1")
                 .create();
         assertEquals(expected,created);
     }

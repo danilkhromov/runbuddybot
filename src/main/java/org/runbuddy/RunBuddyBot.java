@@ -132,7 +132,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .addButton("Пройти заново", RESET)
                             .addButton("Меню", MENU)
                             .buttonsInRow(1)
-                            .setPhoto(shoe[0], shoe[1]);
+                            .setPhoto(shoe[1], shoe[0]);
                     break;
                 default:
                     answer = new MessageBuilder(chatId)
