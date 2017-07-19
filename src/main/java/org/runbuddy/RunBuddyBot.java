@@ -134,6 +134,36 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                             .buttonsInRow(1)
                             .setPhoto(shoe[1], shoe[0]);
                     break;
+                case MENU:
+                    answer = new MessageBuilder(chatId, messageId)
+                            .addButton("Пройти тест", RESET)
+                            .addUrl("Интернет магазин", "striderunning.ru")
+                            .addButton("Адрес магазина", LOCATION)
+                            .addUrl("Журнал StrideMag", "stridemag.ru")
+                            .addButton("GAIT-анализ", GAIT)
+                            .addButton("Расписание тренировок", SCHEDULE)
+                            .buttonsInRow(1)
+                            .setText("Меню бота:");
+                    break;
+                case SCHEDULE:
+                    answer = new MessageBuilder(chatId, messageId)
+                            .addUrl("Посмотреть", "blog.striderunning.ru/расписание-пробежек")
+                            .addButton("Меню", MENU)
+                            .setText("Актуальное расписание на эту неделю:");
+                    break;
+                case LOCATION:
+                    answer = new MessageBuilder(chatId, messageId)
+                            .addUrl("Показать на карте", "www.google.ru/maps/place/Stride+Running+Store/@55.7232466,37.584498,17z/data=!3m1!4b1!4m5!3m4!1s0x46b54b75a015a25f:0xc26503188a713001!8m2!3d55.7232466!4d37.5866867")
+                            .addButton("Меню", MENU)
+                            .setText("Наш магазин:\nг.Москва, Фрунзенская набережная, 32");
+                    break;
+                case GAIT:
+                    answer = new MessageBuilder(chatId, messageId)
+                            .addUrl("Показать на карте", "www.google.ru/maps/place/Stride+Running+Store/@55.7232466,37.584498,17z/data=!3m1!4b1!4m5!3m4!1s0x46b54b75a015a25f:0xc26503188a713001!8m2!3d55.7232466!4d37.5866867")
+                            .addButton("Меню", MENU)
+                            .setText("Вы можете совершено бесплатно пройти GAIT-анализ в нашем магазине по адресу:\n" +
+                                    "г. Москва, Фрунзенская набережная, 32");
+                    break;
                 default:
                     answer = new MessageBuilder(chatId)
                             .setText("Что-то пошло не так, попробуйте снова");

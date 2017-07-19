@@ -19,6 +19,8 @@ public class CallbackQueries {
     public static final String ROAD = "road = 1";
     public static final String OFF_ROAD = "off_road = 1";
     public static final String ANOTHER = "another";
-    public static final String WATCH_IN_STORE = "watch_in_store";
     public static final String RESET = "reset";
+    public static final String GAIT = "gait";
+    public static final String SCHEDULE = "schedule";
+    public static final String LOCATION = "location";
 }
