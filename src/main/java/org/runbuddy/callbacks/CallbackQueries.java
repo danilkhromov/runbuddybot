@@ -4,7 +4,7 @@ package org.runbuddy.callbacks;
  * Created by Daniil Khromov.
  */
 public class CallbackQueries {
-    public static final String START_QUERY = "start_test";
+    public static final String START = "start";
     public static final String MENU = "menu";
     public static final String MEN = "gender = 'men'";
     public static final String WOMEN = "gender = 'women'";

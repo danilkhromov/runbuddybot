@@ -41,7 +41,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
             Message msg = update.getMessage();
             if (msg.getText().equals(Commands.START_COMMAND)) {
                 MessageBuilder answer = new MessageBuilder(msg.getChatId().toString())
-                        .addButton("Начать", START_QUERY)
+                        .addButton("Начать", START)
                         .addButton("Меню", MENU)
                         .setText("Привет! " +
                                         "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +
@@ -64,7 +64,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
             MessageBuilder answer;
 
             switch (callbackQuery) {
-                case START_QUERY:
+                case START:
                 case RESET:
                     TemporaryStorage.addEntry(userId);
                     answer = new MessageBuilder(chatId, messageId)
