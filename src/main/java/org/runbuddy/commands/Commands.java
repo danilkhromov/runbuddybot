@@ -6,5 +6,5 @@ package org.runbuddy.commands;
 public class Commands {
     private static final String COMMAND_INITIATION_CHAR = "/";
     public static final String START_COMMAND = COMMAND_INITIATION_CHAR + "start";
-    public static final String MENU_COMMAND =  COMMAND_INITIATION_CHAR + "menu";
+    public static final String ADMIN_COMMAND = COMMAND_INITIATION_CHAR + "admin";
 }

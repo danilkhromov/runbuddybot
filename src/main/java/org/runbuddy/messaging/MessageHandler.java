@@ -17,7 +17,7 @@ public class MessageHandler extends RunBuddyBot {
     public void sendAnswer (MessageBuilder answer) throws TelegramApiException {
         switch (type) {
             case TEXT:
-                sendMessage(answer.getMessage());
+                execute(answer.getMessage());
                 break;
             case PHOTO:
                 sendPhoto(answer.getPhoto());
@@ -25,7 +25,7 @@ public class MessageHandler extends RunBuddyBot {
         }
 
         if (answer.getDeletePrevious()) {
-            deleteMessage(answer.getDelete());
+            execute(answer.getDelete());
         }
     }
 }
