@@ -24,7 +24,7 @@ public class MessageHandler extends RunBuddyBot {
                 break;
         }
 
-        if (answer.getDeletePrevious()) {
+        if (answer.isDeletePrevious()) {
             execute(answer.getDelete());
         }
     }

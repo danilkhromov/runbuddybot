@@ -54,6 +54,15 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
+            } else if (msg.getText().equals(Commands.ADMIN_COMMAND + " tvoya mamka")) {
+                MessageBuilder answer = new MessageBuilder(msg.getChatId().toString())
+                        .setText("");
+                try {
+                    MessageHandler messageHandler = new MessageHandler(answer);
+                    messageHandler.sendAnswer(answer);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (update.hasCallbackQuery()) {
             String callbackQuery = update.getCallbackQuery().getData();
@@ -126,7 +135,7 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                     dbManager.getResult(userId, result);
                 case ANOTHER:
                     String shoe[] = new DBManager().getShoe(userId);
-                    answer = new MessageBuilder(chatId, messageId)
+                    answer = new MessageBuilder(chatId)
                             .addButton("Другой кроссовок", ANOTHER)
                             .addUrl("Посмотреть в магазине", shoe[2])
                             .addButton("Пройти заново", RESET)

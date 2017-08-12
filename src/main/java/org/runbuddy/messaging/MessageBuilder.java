@@ -36,7 +36,7 @@ public class MessageBuilder {
                 .setMessageId(messageId);
     }
 
-    boolean getDeletePrevious() {
+    boolean isDeletePrevious() {
         return deletePrevious;
     }
 

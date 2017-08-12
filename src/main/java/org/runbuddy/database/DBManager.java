@@ -4,6 +4,8 @@ import org.sqlite.SQLiteErrorCode;
 import org.sqlite.SQLiteException;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Danil Khromov.
@@ -135,5 +137,23 @@ public class DBManager {
             e.printStackTrace();
         }
         return shoe;
+    }
+
+    public List<Integer> getUsers() {
+        List<Integer> users = new ArrayList<>();
+        String query = new QueryBuilder()
+                .select("user_id")
+                .from("users")
+                .create();
+        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                users.add(resultSet.getInt("user_id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 }
