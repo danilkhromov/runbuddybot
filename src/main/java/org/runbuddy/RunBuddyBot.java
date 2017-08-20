@@ -1,23 +1,28 @@
 package org.runbuddy;
 
-import org.runbuddy.commands.Commands;
-import org.runbuddy.database.DBManager;
-import org.runbuddy.database.TemporaryStorage;
-import org.runbuddy.messaging.MessageBuilder;
-import org.runbuddy.messaging.MessageHandler;
-import org.telegram.telegrambots.api.objects.Message;
-import org.telegram.telegrambots.api.objects.Update;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.exceptions.TelegramApiException;
-
-import static org.runbuddy.callbacks.CallbackQueries.*;
+import org.runbuddy.callbacks.StartCallback;
+import org.runbuddy.commands.StartCommand;
+import org.runbuddy.advancedbot.TelegramAdvancedCommandBot;
 
 /**
  * Created by Daniil Khromov.
  */
-public class RunBuddyBot extends TelegramLongPollingBot {
+public class RunBuddyBot extends TelegramAdvancedCommandBot {
+
+
+    public RunBuddyBot() {
+        super("runbuddybot");
+
+        registerCommand(new StartCommand());
+        registerCallback(new StartCallback());
+    }
 
     @Override
+    public String getBotToken() {
+        return "443181452:AAGdpxqqJfejzLkuL3SQL8VSPZ_9rug91TM";
+    }
+
+    /*@Override
     public void onUpdateReceived(Update update) {
         try {
             commandHandler(update);
@@ -186,5 +191,5 @@ public class RunBuddyBot extends TelegramLongPollingBot {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 }

@@ -44,11 +44,11 @@ public class MessageBuilder {
         return type;
     }
 
-    SendMessage getMessage() {
+    public SendMessage getMessage() {
         return message;
     }
 
-    SendPhoto getPhoto() {
+    public SendPhoto getPhoto() {
         return photo;
     }
 
