@@ -25,8 +25,7 @@ public class MessageBuilderTest {
         SendPhoto photo = new MessageBuilder(chatId)
                 .addButton(label1, "result1")
                 .addButton(label2, "result2")
-                .setPhoto("url", "caption")
-                .getPhoto();
+                .getPhoto("url", "caption");
         Assert.assertEquals(chatId, photo.getChatId());
         List<List<InlineKeyboardButton>> keyboard = ((InlineKeyboardMarkup) photo.getReplyMarkup()).getKeyboard();
         assertEquals("2 rows of buttons expected", 2, keyboard.size());
@@ -40,6 +39,6 @@ public class MessageBuilderTest {
     public void testNegativeRowSize() {
         new MessageBuilder("")
                 .buttonsInRow(-1)
-                .getPhoto();
+                .getPhoto("url", "caption");
     }
 }

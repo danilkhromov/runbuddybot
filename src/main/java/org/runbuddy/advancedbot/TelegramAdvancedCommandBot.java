@@ -16,7 +16,6 @@ public abstract class TelegramAdvancedCommandBot extends TelegramLongPollingBot 
         this.botUsername = botUsername;
         this.commandRegistry = new CommandRegistry();
         this.callbackRegistry = new CallbackRegistry();
-        //this(ApiContext.getInstance(DefaultBotOptions.class), botUsername);
     }
 
     @Override
@@ -24,14 +23,10 @@ public abstract class TelegramAdvancedCommandBot extends TelegramLongPollingBot 
         if (update.hasMessage()) {
             Message message = update.getMessage();
             if (message.isCommand()) {
-                if (commandRegistry.executeCommand(this, message)) {
-                    return;
-                }
+                commandRegistry.executeCommand(this, message);
             }
         } else if (update.hasCallbackQuery()) {
-            if (callbackRegistry.executeCallback(this,update)) {
-                return;
-            }
+            callbackRegistry.executeCallback(this,update);
         }
     }
 
@@ -39,8 +34,8 @@ public abstract class TelegramAdvancedCommandBot extends TelegramLongPollingBot 
         return commandRegistry.registerCommand(botCommand);
     }
 
-    protected final boolean registerCallback(BotCallback botCallback) {
-        return callbackRegistry.registerCallback(botCallback);
+    protected final void registerCallback(BotCallback botCallback) {
+        callbackRegistry.registerCallback(botCallback);
     }
 
     @Override

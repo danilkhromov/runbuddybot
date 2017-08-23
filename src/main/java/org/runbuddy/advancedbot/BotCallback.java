@@ -1,12 +1,9 @@
 package org.runbuddy.advancedbot;
 
 import org.telegram.telegrambots.api.objects.CallbackQuery;
-import org.telegram.telegrambots.api.objects.Chat;
-import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +23,7 @@ public abstract class BotCallback {
         callbackNames.addAll(Arrays.asList(names));
     }
 
-    public final List<String> getCallbackNames() {
+    final List<String> getCallbackNames() {
         return callbackNames;
     }
 

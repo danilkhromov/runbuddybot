@@ -23,14 +23,13 @@ public class StartCommand extends BotCommand {
     public void execute(AbsSender absSender, User user, Chat chat) {
         MessageBuilder answer = new MessageBuilder(chat.getId().toString())
                 .addButton("Начать", START)
-                .addButton("Меню", MENU)
-                .setText("Привет! " +
-                        "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +
-                        "если ты ответишь на несколько вопросов.");
+                .addButton("Меню", MENU);
         DBManager dbManager = new DBManager();
         dbManager.addUser(user.getId().toString());
         try {
-            absSender.execute(answer.getMessage());
+            absSender.execute(answer.getMessage("Привет! " +
+                    "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +
+                    "если ты ответишь на несколько вопросов."));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

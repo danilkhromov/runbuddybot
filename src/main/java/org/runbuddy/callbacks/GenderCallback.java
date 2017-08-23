@@ -13,22 +13,23 @@ import static org.runbuddy.callbacks.CallbackQueries.*;
 /**
  * Created by Danil Khromov.
  */
-public class StartCallback extends BotCallback {
+public class GenderCallback extends BotCallback {
 
-    public StartCallback() {
-        super("start", "reset");
+    public GenderCallback() {
+        super(START, RESET);
     }
+
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
         TemporaryStorage.addEntry(user.getId().toString());
-        MessageBuilder answer = new MessageBuilder(user.getId().toString(), callbackQuery.getMessage().getMessageId())
+        MessageBuilder answer = new MessageBuilder(user.getId().toString())
                 .addButton("Мужчина", MEN)
                 .addButton("Женщина", WOMEN)
-                .buttonsInRow(2)
-                .setPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlT2g0QTlYNE41SFE/view?usp=sharing",
-                        "Укажи свой пол");
+                .buttonsInRow(2);
         try {
-            absSender.sendPhoto(answer.getPhoto());
+            absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlT2g0QTlYNE41SFE/view?usp=sharing",
+                    "Укажи свой пол"));
+            absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
