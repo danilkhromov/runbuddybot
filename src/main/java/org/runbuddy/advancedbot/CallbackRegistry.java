@@ -17,6 +17,7 @@ final class CallbackRegistry {
         List<String> names = botCallback.getCallbackNames();
         for (String name:names) {
             if (callbackRegistryMap.containsKey(name)) {
+                // <name> already exists in <callback1>, while registering <callback2>
                 throw new IllegalArgumentException("Callback query with this name already exists");
             } else {
                 callbackRegistryMap.put(name,botCallback);

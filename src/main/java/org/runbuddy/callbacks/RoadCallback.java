@@ -18,6 +18,7 @@ public class RoadCallback extends BotCallback {
     public RoadCallback() {
         super(DISTANCE, SPEED);
     }
+
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
         TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());

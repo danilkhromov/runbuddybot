@@ -18,6 +18,7 @@ public class ArchCallback extends BotCallback {
     public ArchCallback() {
         super(LESS_THAN_80, MORE_THAN_80);
     }
+
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
         TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());

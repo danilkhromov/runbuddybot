@@ -1,8 +1,8 @@
 package org.runbuddy;
 
+import org.runbuddy.advancedbot.TelegramAdvancedCommandBot;
 import org.runbuddy.callbacks.*;
 import org.runbuddy.commands.StartCommand;
-import org.runbuddy.advancedbot.TelegramAdvancedCommandBot;
 
 /**
  * Created by Daniil Khromov.
