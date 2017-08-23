@@ -5,16 +5,11 @@ import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Created by Daniil Khromov.
  * TODO admin access
- * TODO message sending method
- * TODO unit tests for builder classes and DBManager
- * TODO all exception must be handled properly
+ * TODO unit tests for all this new sweet classes
+ * TODO all exceptions must be handled properly
  */
 class RunBuddyStarter {
     public static void main(String[] args) throws ClassNotFoundException {

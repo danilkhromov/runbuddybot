@@ -13,6 +13,7 @@ public class RunBuddyBot extends TelegramAdvancedCommandBot {
         super("runbuddybot");
 
         registerCommand(new StartCommand());
+
         registerCallback(new GenderCallback());
         registerCallback(new WeightCallback());
         registerCallback(new ArchCallback());
