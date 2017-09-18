@@ -12,13 +12,13 @@ import java.util.List;
  * Created by Danil Khromov.
  */
 public abstract class BotCallback {
-    // Set -> HashSet/TreeSet
+
     private final List<String> callbackNames;
 
     /**
      * Creates a bot callback.
      *
-     * @throws IllegalArgumentException if no names ahve bneen provided
+     * @throws IllegalArgumentException if no names have been provided
      * @param names list of names to register for this bot callback.
      */
     public BotCallback(String... names) {

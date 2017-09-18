@@ -2,6 +2,7 @@ package org.runbuddy;
 
 import org.runbuddy.advancedbot.TelegramAdvancedCommandBot;
 import org.runbuddy.callbacks.*;
+import org.runbuddy.commands.MenuCommand;
 import org.runbuddy.commands.StartCommand;
 
 /**
@@ -13,6 +14,7 @@ public class RunBuddyBot extends TelegramAdvancedCommandBot {
         super("runbuddybot");
 
         registerCommand(new StartCommand());
+        registerCommand(new MenuCommand());
 
         registerCallback(new GenderCallback());
         registerCallback(new WeightCallback());
@@ -21,6 +23,8 @@ public class RunBuddyBot extends TelegramAdvancedCommandBot {
         registerCallback(new RoadCallback());
         registerCallback(new ResultCallback());
         registerCallback(new AnotherShoeCallback());
+        registerCallback(new MenuCallback());
+        registerCallback(new GaitCallback());
     }
 
     @Override
