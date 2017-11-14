@@ -139,8 +139,8 @@ public class DBManager {
         return shoe;
     }
 
-    public List<Integer> getUsers() {
-        List<Integer> users = new ArrayList<>();
+    public List<Long> getUsers() {
+        List<Long> users = new ArrayList<>();
         String query = new QueryBuilder()
                 .select("user_id")
                 .from("users")
@@ -149,7 +149,7 @@ public class DBManager {
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
-                users.add(resultSet.getInt("user_id"));
+                users.add(resultSet.getLong("user_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
