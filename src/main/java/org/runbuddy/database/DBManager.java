@@ -145,6 +145,20 @@ public class DBManager {
         return shoe;
     }
 
+    protected void CleanTempTable() {
+        String query = new QueryBuilder()
+                .deleteFrom("temp")
+                .where("timestamp >= datetime('now', '-3 hours')")
+                .create();
+        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+        Statement statement = connection.createStatement();
+        ) {
+          statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<Long> getUsers() {
         List<Long> users = new ArrayList<>();
         String query = new QueryBuilder()

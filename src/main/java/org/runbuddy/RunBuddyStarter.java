@@ -1,9 +1,14 @@
 package org.runbuddy;
 
 import org.runbuddy.database.DBManager;
+import org.runbuddy.database.TableCleaner;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Daniil Khromov.
@@ -18,6 +23,11 @@ class RunBuddyStarter {
 
         DBManager dbManager = new DBManager();
         dbManager.createTables();
+
+        TableCleaner tableCleaner = new TableCleaner();
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+
+        executorService.scheduleWithFixedDelay(tableCleaner, 5, 5, TimeUnit.MINUTES);
 
         ApiContextInitializer.init();
 
