@@ -69,12 +69,16 @@ public class DBManager {
         }
     }
 
-    private void addTempResult(Statement statement, String userId, String model, String name, String photoUrl, String url) throws SQLException {
+    private void addTempResult(Connection connection, String userId, String model, String name, String photoUrl, String url) throws SQLException {
         String insert = new QueryBuilder()
                 .insertInto("temp", "user_id", "model", "name", "photo_url", "url", "timestamp")
                 .values(userId, model, name, photoUrl, url, "datetime('now')")
                 .create();
-        statement.executeUpdate(insert);
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(insert);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getResult(String userId, String result) {
@@ -96,13 +100,14 @@ public class DBManager {
         try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(select)) {
+
             while (resultSet.next()) {
                 String model = "'" + resultSet.getString("model") + "'";
                 String name = "'" + resultSet.getString("name") + "'";
                 String photoUrl = "'" + resultSet.getString("photo_url") + "'";
                 String url = "'" + resultSet.getString("url") + "'";
 
-                addTempResult(statement, userId, model, name, photoUrl, url);
+                addTempResult(connection, userId, model, name, photoUrl, url);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,6 +125,7 @@ public class DBManager {
         try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
+
             while (resultSet.next()) {
                 String model = "'" + resultSet.getString("model") + "'";
                 shoe[0] = resultSet.getString("name");
