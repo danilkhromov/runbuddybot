@@ -3,6 +3,7 @@ package org.runbuddy.database;
 import org.sqlite.SQLiteErrorCode;
 import org.sqlite.SQLiteException;
 
+import java.beans.PropertyVetoException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class DBManager {
     }
 
     public void createTables() {
-        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+        try (Connection connection = ConnectionManager.getInstance().getConnection();
              Statement statement = connection.createStatement()) {
             String query = CreationQueries.CREATE_SHOES_TABLE;
             statement.executeUpdate(query);
@@ -45,17 +46,17 @@ public class DBManager {
 
             query = CreationQueries.CREATE_TEMP_TABLE;
             statement.executeUpdate(query);
-        } catch (SQLException e) {
+        } catch (SQLException | PropertyVetoException e) {
             e.printStackTrace();
         }
     }
 
-    public void addUser(String userId) {
+    public static synchronized void addUser(String userId) {
         String insert = new QueryBuilder()
                 .insertInto("users", "user_id")
                 .values(userId)
                 .create();
-        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+        try (Connection connection = ConnectionManager.getInstance().getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(insert);
         } catch (SQLiteException e) {
@@ -69,7 +70,7 @@ public class DBManager {
         }
     }
 
-    private void addTempResult(Connection connection, String userId, String model, String name, String photoUrl, String url) throws SQLException {
+    private static synchronized void addTempResult(Connection connection, String userId, String model, String name, String photoUrl, String url) throws SQLException {
         String insert = new QueryBuilder()
                 .insertInto("temp", "user_id", "model", "name", "photo_url", "url", "timestamp")
                 .values(userId, model, name, photoUrl, url, "datetime('now')")
@@ -81,7 +82,7 @@ public class DBManager {
         }
     }
 
-    public void getResult(String userId, String result) {
+    public static synchronized void getResult(String userId, String result) {
         String[] conditions = result.split(",");
         String select = new QueryBuilder()
                 .select("shoes.model", "name", "photo_url", "url")
@@ -97,7 +98,7 @@ public class DBManager {
                 .and(conditions[4])
                 .orderBy("RANDOM()")
                 .create();
-        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+        try (Connection connection = ConnectionManager.getInstance().getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(select)) {
 
@@ -109,12 +110,12 @@ public class DBManager {
 
                 addTempResult(connection, userId, model, name, photoUrl, url);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | PropertyVetoException e) {
             e.printStackTrace();
         }
     }
 
-    public String[] getShoe(String userId) {
+    public static synchronized String[] getShoe(String userId) {
         String[] shoe = new String[3];
         String query = new QueryBuilder()
                 .select("model", "name", "photo_url", "url")
@@ -122,7 +123,7 @@ public class DBManager {
                 .where("user_id").eq(userId)
                 .limit(1)
                 .create();
-        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+        try (Connection connection = ConnectionManager.getInstance().getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
 
@@ -139,22 +140,22 @@ public class DBManager {
                         .create();
                 statement.executeUpdate(query);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | PropertyVetoException e) {
             e.printStackTrace();
         }
         return shoe;
     }
 
-    protected void CleanTempTable() {
+    void cleanTempTable() {
         String query = new QueryBuilder()
                 .deleteFrom("temp")
                 .where("timestamp >= datetime('now', '-3 hours')")
                 .create();
-        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+        try (Connection connection = ConnectionManager.getInstance().getConnection();
         Statement statement = connection.createStatement();
         ) {
           statement.executeUpdate(query);
-        } catch (SQLException e) {
+        } catch (SQLException | PropertyVetoException e) {
             e.printStackTrace();
         }
     }
@@ -165,13 +166,13 @@ public class DBManager {
                 .select("user_id")
                 .from("users")
                 .create();
-        try (Connection connection = DriverManager.getConnection(DEFAULT_CONNECTION_URL);
+        try (Connection connection = ConnectionManager.getInstance().getConnection();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
                 users.add(resultSet.getLong("user_id"));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | PropertyVetoException e) {
             e.printStackTrace();
         }
         return users;

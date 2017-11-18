@@ -5,6 +5,6 @@ public class TableCleaner implements Runnable {
     @Override
     public void run() {
         DBManager dbManager = new DBManager();
-        dbManager.CleanTempTable();
+        dbManager.cleanTempTable();
     }
 }

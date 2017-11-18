@@ -8,6 +8,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
  * Created by Danil Khromov.
  */
 public abstract class TelegramAdvancedCommandBot extends TelegramLongPollingBot {
+    
     private final CommandRegistry commandRegistry;
     private final CallbackRegistry callbackRegistry;
     private String botUsername;

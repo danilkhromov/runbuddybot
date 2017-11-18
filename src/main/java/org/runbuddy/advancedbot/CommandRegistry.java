@@ -11,6 +11,7 @@ import java.util.Map;
  * Created by Danil Khromov.
  */
 final class CommandRegistry {
+
     private final Map<String, BotCommand> commandRegistryMap = new HashMap<>();
 
     final boolean registerCommand(BotCommand botCommand) {

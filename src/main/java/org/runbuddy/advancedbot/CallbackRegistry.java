@@ -11,6 +11,7 @@ import java.util.Map;
  * Created by Danil Khromov.
  */
 final class CallbackRegistry {
+
     private final Map<String, BotCallback> callbackRegistryMap = new HashMap<>();
 
     final void registerCallback(BotCallback botCallback) {

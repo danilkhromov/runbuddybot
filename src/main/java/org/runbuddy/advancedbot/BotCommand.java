@@ -8,6 +8,7 @@ import org.telegram.telegrambots.bots.AbsSender;
  * Created by Danil Khromov.
  */
 public abstract class BotCommand {
+
     final static String COMMAND_INIT_CHAR = "/";
 
     private final String commandName;

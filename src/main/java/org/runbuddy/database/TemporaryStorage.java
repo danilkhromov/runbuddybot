@@ -2,7 +2,6 @@ package org.runbuddy.database;
 
 import org.apache.commons.collections4.map.PassiveExpiringMap;
 
-import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 

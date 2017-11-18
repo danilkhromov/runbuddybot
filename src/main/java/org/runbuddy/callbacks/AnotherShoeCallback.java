@@ -29,7 +29,7 @@ public class AnotherShoeCallback extends BotCallback {
                 .buttonsInRow(1);
         try {
             absSender.sendPhoto(answer.getPhoto(shoe[1], shoe[0]));
-            absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
+            //absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
