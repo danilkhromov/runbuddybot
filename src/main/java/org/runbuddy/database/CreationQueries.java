@@ -44,7 +44,7 @@ class CreationQueries {
             "name text NOT NULL, " +
             "photo_url text NOT NULL, " +
             "url text NOT NULL, " +
-            "timestamp text NOT NULL, " +
+            "timestamp text NOT NULL DEFAULT (datetime('now')), " +
             "PRIMARY KEY (user_id, model) " +
             "FOREIGN KEY (model) REFERENCES shoes (model) " +
             "ON DELETE CASCADE ON UPDATE NO ACTION)";

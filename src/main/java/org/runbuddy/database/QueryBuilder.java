@@ -17,14 +17,14 @@ class QueryBuilder {
             if (!column.equals(columns[columns.length -1])) {
                 query.append(", ");
             } else {
-                query.append(")");
+                query.append(") ");
             }
         }
         return this;
     }
 
     QueryBuilder values(String... values) {
-        query.append(" VALUES (");
+        query.append("VALUES (");
         for (int i = 0; i < values.length; i++) {
             query.append(values[i]);
             if (i != values.length - 1) {

@@ -12,16 +12,6 @@ import java.util.List;
  * Created by Danil Khromov.
  */
 public class DBManager {
-    private static final String DEFAULT_CONNECTION_URL = "jdbc:sqlite:runbuddybot.db";
-    private final String connectionUrl;
-
-    public DBManager() {
-        this(DEFAULT_CONNECTION_URL);
-    }
-
-    DBManager(String connectionUrl) {
-        this.connectionUrl = connectionUrl;
-    }
 
     public void createTables() {
         try (Connection connection = ConnectionManager.getInstance().getConnection();
@@ -72,8 +62,8 @@ public class DBManager {
 
     private static synchronized void addTempResult(Connection connection, String userId, String model, String name, String photoUrl, String url) throws SQLException {
         String insert = new QueryBuilder()
-                .insertInto("temp", "user_id", "model", "name", "photo_url", "url", "timestamp")
-                .values(userId, model, name, photoUrl, url, "datetime('now')")
+                .insertInto("temp", "user_id", "model", "name", "photo_url", "url")
+                .values(userId, model, name, photoUrl, url)
                 .create();
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(insert);
@@ -101,7 +91,6 @@ public class DBManager {
         try (Connection connection = ConnectionManager.getInstance().getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(select)) {
-
             while (resultSet.next()) {
                 String model = "'" + resultSet.getString("model") + "'";
                 String name = "'" + resultSet.getString("name") + "'";
@@ -126,7 +115,6 @@ public class DBManager {
         try (Connection connection = ConnectionManager.getInstance().getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
-
             while (resultSet.next()) {
                 String model = "'" + resultSet.getString("model") + "'";
                 shoe[0] = resultSet.getString("name");
