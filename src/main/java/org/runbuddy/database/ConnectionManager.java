@@ -6,7 +6,7 @@ import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class ConnectionManager {
+class ConnectionManager {
 
     private static ConnectionManager connectionManager;
     private ComboPooledDataSource cpds;
@@ -17,7 +17,7 @@ public class ConnectionManager {
         cpds.setJdbcUrl("jdbc:sqlite:runbuddybot.db");
     }
 
-    public static ConnectionManager getInstance() throws PropertyVetoException {
+    static ConnectionManager getInstance() throws PropertyVetoException {
         if (connectionManager == null) {
             connectionManager = new ConnectionManager();
             return connectionManager;
@@ -26,7 +26,7 @@ public class ConnectionManager {
         }
     }
 
-    public Connection getConnection() throws SQLException {
+    Connection getConnection() throws SQLException {
         return this.cpds.getConnection();
     }
 }

@@ -2,6 +2,7 @@ package org.runbuddy.callbacks;
 
 import org.runbuddy.advancedbot.BotCallback;
 import org.runbuddy.database.DBManager;
+import org.runbuddy.database.TemporaryStorage;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.User;
@@ -18,9 +19,11 @@ public class AnotherShoeCallback extends BotCallback {
     public AnotherShoeCallback() {
         super(ANOTHER);
     }
+
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
-        String shoe[] = new DBManager().getShoe(user.getId().toString());
+        String result = TemporaryStorage.getAnswers(user.getId().toString());
+        String shoe[] = new DBManager().getShoe(user.getId().toString(), result);
         MessageBuilder answer = new MessageBuilder(user.getId().toString())
                 .addButton("Другой кроссовок", ANOTHER)
                 .addUrl("Посмотреть в магазине", shoe[2])
@@ -29,7 +32,7 @@ public class AnotherShoeCallback extends BotCallback {
                 .buttonsInRow(1);
         try {
             absSender.sendPhoto(answer.getPhoto(shoe[1], shoe[0]));
-            //absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
+            absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
