@@ -5,7 +5,7 @@ package org.runbuddy.database;
  */
 class CreationQueries {
     static final String CREATE_SHOES_TABLE = "CREATE TABLE IF NOT EXISTS shoes (" +
-            "model integer PRIMARY KEY, " +
+            "model text NOT NULL PRIMARY KEY, " +
             "name text NOT NULL, " +
             "gender text NOT NULL, " +
             "photo_url text NOT NULL, " +

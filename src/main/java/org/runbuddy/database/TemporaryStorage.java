@@ -22,8 +22,6 @@ public final class TemporaryStorage {
     }
 
     public static String getAnswers(String userId) {
-        String answers = quizData.get(userId).toString();
-        quizData.remove(userId);
-        return answers;
+        return quizData.get(userId).toString();
     }
 }
