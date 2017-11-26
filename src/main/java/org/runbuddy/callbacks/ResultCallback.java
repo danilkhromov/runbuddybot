@@ -25,7 +25,7 @@ public class ResultCallback extends BotCallback {
         TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
         String result = TemporaryStorage.getAnswers(user.getId().toString());
 
-        String shoe[] = new DBManager().getShoe(user.getId().toString(), result);
+        String shoe[] = DBManager.getShoe(user.getId().toString(), result);
 
         MessageBuilder answer = new MessageBuilder(user.getId().toString())
                 .addButton("Другой кроссовок", ANOTHER)

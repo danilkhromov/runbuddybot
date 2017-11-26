@@ -75,6 +75,11 @@ class QueryBuilder {
         return this;
     }
 
+    QueryBuilder notIn(String condition) {
+        query.append(" NOT IN ").append(condition);
+        return this;
+    }
+
     QueryBuilder orderBy(String condition) {
         query.append(" ORDER BY ").append(condition);
         return this;

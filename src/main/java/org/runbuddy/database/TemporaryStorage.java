@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 public final class TemporaryStorage {
     private static final Map<String, StringBuilder> quizData = new PassiveExpiringMap<>(TimeUnit.MINUTES.toMillis(30));
 
+    private TemporaryStorage(){}
+
     public static void addEntry(String userId) {
         StringBuilder answers = new StringBuilder();
         quizData.put(userId, answers);

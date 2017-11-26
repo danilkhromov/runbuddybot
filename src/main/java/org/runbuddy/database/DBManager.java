@@ -11,9 +11,9 @@ import java.util.List;
 /**
  * Created by Danil Khromov.
  */
-public class DBManager {
+public final class DBManager {
 
-    public void createTables() {
+    public static void createTables() {
         try (Connection connection = ConnectionManager.getInstance().getConnection();
              Statement statement = connection.createStatement()) {
             String query = CreationQueries.CREATE_SHOES_TABLE;
@@ -48,9 +48,15 @@ public class DBManager {
         }
     }
 
+
     public static synchronized String[] getShoe(String userId, String result) {
         String[] shoe = new String[3];
         String[] conditions = result.split(",");
+        String subQuery = new QueryBuilder()
+                .select("model")
+                .from("temp")
+                .where("user_id").eq(userId)
+                .create();
         String query = new QueryBuilder()
                 .select("model", "name", "photo_url", "url")
                 .from("shoes")
@@ -59,6 +65,7 @@ public class DBManager {
                 .and(conditions[2])
                 .and(conditions[3])
                 .and(conditions[4])
+                .and("model").notIn(" (" + subQuery + ")")
                 .orderBy("RANDOM()")
                 .limit(1)
                 .create();
@@ -69,6 +76,13 @@ public class DBManager {
                 shoe[0] = resultSet.getString("name");
                 shoe[1] = resultSet.getString("photo_url");
                 shoe[2] = resultSet.getString("url");
+
+                String model = "'" + resultSet.getString("model") + "'";
+                String insert = new QueryBuilder()
+                        .insertInto("temp", "user_id", "model")
+                        .values(userId, model)
+                        .create();
+                statement.executeUpdate(insert);
             }
         } catch (SQLException | PropertyVetoException e) {
             e.printStackTrace();

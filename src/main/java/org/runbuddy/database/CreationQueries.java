@@ -24,10 +24,7 @@ class CreationQueries {
             "user_id integer PRIMARY KEY)";
     static final String CREATE_TEMP_TABLE = "CREATE TABLE IF NOT EXISTS temp (" +
             "user_id integer NOT NULL, " +
-            "model integer NOT NULL, " +
-            "name text NOT NULL, " +
-            "photo_url text NOT NULL, " +
-            "url text NOT NULL, " +
+            "model text NOT NULL, " +
             "timestamp text NOT NULL DEFAULT (datetime('now')), " +
             "PRIMARY KEY (user_id, model) " +
             "FOREIGN KEY (model) REFERENCES shoes (model) " +

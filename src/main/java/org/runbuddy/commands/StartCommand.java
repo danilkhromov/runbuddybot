@@ -24,8 +24,7 @@ public class StartCommand extends BotCommand {
         MessageBuilder answer = new MessageBuilder(chat.getId().toString())
                 .addButton("Начать", START)
                 .addButton("Меню", MENU);
-        DBManager dbManager = new DBManager();
-        dbManager.addUser(user.getId().toString());
+        DBManager.addUser(user.getId().toString());
         try {
             absSender.execute(answer.getMessage("Привет! " +
                     "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +

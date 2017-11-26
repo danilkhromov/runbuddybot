@@ -23,7 +23,7 @@ public class AnotherShoeCallback extends BotCallback {
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
         String result = TemporaryStorage.getAnswers(user.getId().toString());
-        String shoe[] = new DBManager().getShoe(user.getId().toString(), result);
+        String shoe[] = DBManager.getShoe(user.getId().toString(), result);
         MessageBuilder answer = new MessageBuilder(user.getId().toString())
                 .addButton("Другой кроссовок", ANOTHER)
                 .addUrl("Посмотреть в магазине", shoe[2])
