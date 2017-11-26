@@ -9,9 +9,14 @@ import java.util.concurrent.TimeUnit;
  * Created by Danil Khromov.
  */
 public final class TemporaryStorage {
+
     private static final Map<String, StringBuilder> quizData = new PassiveExpiringMap<>(TimeUnit.MINUTES.toMillis(30));
 
     private TemporaryStorage(){}
+
+    public static boolean containsEntry(String userId) {
+        return quizData.containsKey(userId);
+    }
 
     public static void addEntry(String userId) {
         StringBuilder answers = new StringBuilder();

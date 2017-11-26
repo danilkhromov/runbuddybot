@@ -22,19 +22,38 @@ public class ResultCallback extends BotCallback {
 
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
-        TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
-        String result = TemporaryStorage.getAnswers(user.getId().toString());
+        String userId = user.getId().toString();
 
-        String shoe[] = DBManager.getShoe(user.getId().toString(), result);
+        MessageBuilder answer = new MessageBuilder(userId);
 
-        MessageBuilder answer = new MessageBuilder(user.getId().toString())
-                .addButton("Другой кроссовок", ANOTHER)
-                .addUrl("Посмотреть в магазине", shoe[2])
-                .addButton("Пройти заново", RESET)
-                .addButton("Меню", MENU)
-                .buttonsInRow(1);
         try {
-            absSender.sendPhoto(answer.getPhoto(shoe[1], shoe[0]));
+            if (TemporaryStorage.containsEntry(userId)) {
+                TemporaryStorage.addAnswer(userId, callbackQuery.getData());
+                String result = TemporaryStorage.getAnswers(user.getId().toString());
+                String shoe[] = DBManager.getShoe(user.getId().toString(), result);
+
+                if (shoe[1].isEmpty()) {
+                    answer.addButton("Пройти заново", RESET)
+                            .addButton("Меню", MENU)
+                            .buttonsInRow(1);
+                    absSender.execute(answer.getMessage("Похоже результаты запроса устарели или" +
+                            "у нас закончились подходящие модели. Пройти тест заново?"));
+                } else {
+                    answer.addButton("Другой кроссовок", ANOTHER)
+                            .addUrl("Посмотреть в магазине", shoe[2])
+                            .addButton("Пройти заново", RESET)
+                            .addButton("Меню", MENU)
+                            .buttonsInRow(1);
+                    absSender.sendPhoto(answer.getPhoto(shoe[1], shoe[0]));
+                }
+            } else {
+                answer.addButton("Пройти заново", RESET)
+                        .addButton("Меню", MENU)
+                        .buttonsInRow(1);
+                absSender.execute(answer.getMessage("Похоже результаты запроса устарели или " +
+                        "у нас закончились подходящие модели. Пройти тест заново?"));
+            }
+
             absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
             e.printStackTrace();
