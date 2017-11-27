@@ -21,14 +21,23 @@ public class WeightCallback extends BotCallback {
 
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
-        TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
-        MessageBuilder answer = new MessageBuilder(user.getId().toString())
-                .addButton("Меньше 80кг", LESS_THAN_80)
-                .addButton("Больше 80кг", MORE_THAN_80)
-                .buttonsInRow(2);
+        MessageBuilder answer = new MessageBuilder(user.getId().toString());
+
         try {
-            absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlMVFIOElrWldEdWM/view?usp=sharing"
-                    ,"Твой вес"));
+            if (TemporaryStorage.containsEntry(user.getId().toString())) {
+                TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
+                answer.addButton("Меньше 80кг", LESS_THAN_80)
+                        .addButton("Больше 80кг", MORE_THAN_80)
+                        .buttonsInRow(2);
+                absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlMVFIOElrWldEdWM/view?usp=sharing"
+                        ,"Твой вес"));
+            } else {
+                answer.addButton("Пройти заново", RESET)
+                        .addButton("Меню", MENU)
+                        .buttonsInRow(1);
+                absSender.execute(answer.getMessage("Похоже результаты запроса устарели. " +
+                        "Пройти тест заново?"));
+            }
             absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
             e.printStackTrace();

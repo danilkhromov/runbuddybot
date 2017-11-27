@@ -1,6 +1,7 @@
 package org.runbuddy.callbacks;
 
 import org.runbuddy.advancedbot.BotCallback;
+import org.runbuddy.database.DBManager;
 import org.runbuddy.database.TemporaryStorage;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
@@ -22,6 +23,8 @@ public class GenderCallback extends BotCallback {
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
         TemporaryStorage.addEntry(user.getId().toString());
+        DBManager.deleteViewedShoes(user.getId().toString());
+
         MessageBuilder answer = new MessageBuilder(user.getId().toString())
                 .addButton("Мужчина", MEN)
                 .addButton("Женщина", WOMEN)

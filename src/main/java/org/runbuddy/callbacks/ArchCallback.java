@@ -21,16 +21,25 @@ public class ArchCallback extends BotCallback {
 
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
-        TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
-        MessageBuilder answer = new MessageBuilder(user.getId().toString())
-                .addButton("Стопа с высоким подъемом", HIGH_FOOT_ARCH)
-                .addButton("Стопа со средним подъемом", MEDIUM_FOOT_ARCH)
-                .addButton("Стопа с низким подъемом", LOW_FOOT_ARCH)
-                .addButton("Плоская стопа", FLAT_FOOT_ARCH)
-                .buttonsInRow(2);
+        MessageBuilder answer = new MessageBuilder(user.getId().toString());
+
         try {
-            absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlNlM0cmdSdmxQeUk/view?usp=sharing",
-                    "Тип стопы"));
+            if (TemporaryStorage.containsEntry(user.getId().toString())) {
+                TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
+                answer.addButton("Высокий подъем", HIGH_FOOT_ARCH)
+                        .addButton("Средний подъем", MEDIUM_FOOT_ARCH)
+                        .addButton("Низкий подъем", LOW_FOOT_ARCH)
+                        .addButton("Плоская стопа", FLAT_FOOT_ARCH)
+                        .buttonsInRow(2);
+                absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlNlM0cmdSdmxQeUk/view?usp=sharing",
+                        "Тип стопы"));
+            } else {
+                answer.addButton("Пройти заново", RESET)
+                        .addButton("Меню", MENU)
+                        .buttonsInRow(1);
+                absSender.execute(answer.getMessage("Похоже результаты запроса устарели. " +
+                        "Пройти тест заново?"));
+            }
             absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
             e.printStackTrace();

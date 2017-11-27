@@ -31,26 +31,26 @@ public class AnotherShoeCallback extends BotCallback {
                 String result = TemporaryStorage.getAnswers(userId);
                 String shoe[] = DBManager.getShoe(user.getId().toString(), result);
 
-                if (shoe[1].equals(null)) {
-                    answer.addButton("Пройти заново", RESET)
-                            .addButton("Меню", MENU)
-                            .buttonsInRow(1);
-                    absSender.execute(answer.getMessage("Похоже результаты запроса устарели или" +
-                            "у нас закончились подходящие модели. Пройти тест заново?"));
-                } else {
+                if (shoe[1] != null) {
                     answer.addButton("Другой кроссовок", ANOTHER)
                             .addUrl("Посмотреть в магазине", shoe[2])
                             .addButton("Пройти заново", RESET)
                             .addButton("Меню", MENU)
                             .buttonsInRow(1);
                     absSender.sendPhoto(answer.getPhoto(shoe[1], shoe[0]));
+                } else {
+                    answer.addButton("Пройти заново", RESET)
+                            .addButton("Меню", MENU)
+                            .buttonsInRow(1);
+                    absSender.execute(answer.getMessage("Похоже у нас закончились подходящие модели. " +
+                            "Пройти тест заново?"));
                 }
             } else {
                 answer.addButton("Пройти заново", RESET)
                         .addButton("Меню", MENU)
                         .buttonsInRow(1);
-                absSender.execute(answer.getMessage("Похоже результаты запроса устарели или " +
-                        "у нас закончились подходящие модели. Пройти тест заново?"));
+                absSender.execute(answer.getMessage("Похоже результаты запроса устарели. " +
+                        "Пройти тест заново?"));
             }
             absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {

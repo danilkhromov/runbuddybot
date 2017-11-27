@@ -21,14 +21,23 @@ public class RoadCallback extends BotCallback {
 
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
-        TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
-        MessageBuilder answer = new MessageBuilder(user.getId().toString())
-                .addButton("Асфальт", ROAD)
-                .addButton("Пересеченная местность", OFF_ROAD)
-                .buttonsInRow(2);
+        MessageBuilder answer = new MessageBuilder(user.getId().toString());
+
         try {
-            absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlbkpGTVcwZDlUOUE/view?usp=sharing",
-                    "Асфальт или пересеченная местность?"));
+            if (TemporaryStorage.containsEntry(user.getId().toString())) {
+                TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
+                answer.addButton("Асфальт", ROAD)
+                        .addButton("Пересеченная местность", OFF_ROAD)
+                        .buttonsInRow(2);
+                absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlbkpGTVcwZDlUOUE/view?usp=sharing",
+                        "Асфальт или пересеченная местность?"));
+            } else {
+                answer.addButton("Пройти заново", RESET)
+                        .addButton("Меню", MENU)
+                        .buttonsInRow(1);
+                absSender.execute(answer.getMessage("Похоже результаты запроса устарели. " +
+                        "Пройти тест заново?"));
+            }
             absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
             e.printStackTrace();

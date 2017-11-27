@@ -90,6 +90,19 @@ public final class DBManager {
         return shoe;
     }
 
+    public static synchronized void deleteViewedShoes(String userId) {
+        String delete = new QueryBuilder()
+                .deleteFrom("temp")
+                .where("user_id").eq(userId)
+                .create();
+        try (Connection connection = ConnectionManager.getInstance().getConnection();
+             Statement statement = connection.createStatement()) {
+            statement.executeUpdate(delete);
+        } catch (SQLException | PropertyVetoException e) {
+            e.printStackTrace();
+        }
+    }
+
     void cleanTempTable() {
         String query = new QueryBuilder()
                 .deleteFrom("temp")
@@ -111,8 +124,8 @@ public final class DBManager {
                 .from("users")
                 .create();
         try (Connection connection = ConnectionManager.getInstance().getConnection();
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery(query)) {
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
                 users.add(resultSet.getLong("user_id"));
             }

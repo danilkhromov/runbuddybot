@@ -21,14 +21,23 @@ public class TypeCallback extends BotCallback {
 
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
-        TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
-        MessageBuilder answer = new MessageBuilder(user.getId().toString())
-                .addButton("Расстояние", DISTANCE)
-                .addButton("Скорость", SPEED)
-                .buttonsInRow(2);
+        MessageBuilder answer = new MessageBuilder(user.getId().toString());
+
         try {
-            absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlRWVGcXdhQk5NUmc/view?usp=sharing",
-                    "Расстояние или скорость?"));
+            if (TemporaryStorage.containsEntry(user.getId().toString())) {
+                TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
+                answer.addButton("Расстояние", DISTANCE)
+                        .addButton("Скорость", SPEED)
+                        .buttonsInRow(2);
+                absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlRWVGcXdhQk5NUmc/view?usp=sharing",
+                        "Расстояние или скорость?"));
+            } else {
+                answer.addButton("Пройти заново", RESET)
+                        .addButton("Меню", MENU)
+                        .buttonsInRow(1);
+                absSender.execute(answer.getMessage("Похоже результаты запроса устарели. " +
+                        "Пройти тест заново?"));
+            }
             absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
             e.printStackTrace();
