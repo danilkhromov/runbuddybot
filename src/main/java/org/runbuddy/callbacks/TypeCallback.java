@@ -1,6 +1,7 @@
 package org.runbuddy.callbacks;
 
 import org.runbuddy.advancedbot.BotCallback;
+import org.runbuddy.config.ConfigLoader;
 import org.runbuddy.database.TemporaryStorage;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
@@ -29,7 +30,7 @@ public class TypeCallback extends BotCallback {
                 answer.addButton("Расстояние", DISTANCE)
                         .addButton("Скорость", SPEED)
                         .buttonsInRow(2);
-                absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlRWVGcXdhQk5NUmc/view?usp=sharing",
+                absSender.sendPhoto(answer.getPhoto(ConfigLoader.getInstace().getProperty("type"),
                         "Расстояние или скорость?"));
             } else {
                 answer.addButton("Пройти заново", RESET)

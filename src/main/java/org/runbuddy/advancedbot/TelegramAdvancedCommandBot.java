@@ -1,8 +1,12 @@
 package org.runbuddy.advancedbot;
 
 import org.telegram.telegrambots.api.objects.Message;
+import org.telegram.telegrambots.api.objects.PhotoSize;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by Danil Khromov.

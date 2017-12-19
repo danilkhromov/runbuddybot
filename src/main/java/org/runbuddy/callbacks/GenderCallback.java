@@ -1,6 +1,7 @@
 package org.runbuddy.callbacks;
 
 import org.runbuddy.advancedbot.BotCallback;
+import org.runbuddy.config.ConfigLoader;
 import org.runbuddy.database.DBManager;
 import org.runbuddy.database.TemporaryStorage;
 import org.runbuddy.messaging.MessageBuilder;
@@ -30,7 +31,7 @@ public class GenderCallback extends BotCallback {
                 .addButton("Женщина", WOMEN)
                 .buttonsInRow(2);
         try {
-            absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlT2g0QTlYNE41SFE/view?usp=sharing",
+            absSender.sendPhoto(answer.getPhoto(ConfigLoader.getInstace().getProperty("gender"),
                     "Укажи свой пол"));
             absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {

@@ -1,6 +1,7 @@
 package org.runbuddy.callbacks;
 
 import org.runbuddy.advancedbot.BotCallback;
+import org.runbuddy.config.ConfigLoader;
 import org.runbuddy.database.TemporaryStorage;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
@@ -29,8 +30,8 @@ public class WeightCallback extends BotCallback {
                 answer.addButton("Меньше 80кг", LESS_THAN_80)
                         .addButton("Больше 80кг", MORE_THAN_80)
                         .buttonsInRow(2);
-                absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlMVFIOElrWldEdWM/view?usp=sharing"
-                        ,"Твой вес"));
+                absSender.sendPhoto(answer.getPhoto(ConfigLoader.getInstace().getProperty("weight"),
+                        "Твой вес"));
             } else {
                 answer.addButton("Пройти заново", RESET)
                         .addButton("Меню", MENU)

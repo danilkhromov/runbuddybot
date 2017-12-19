@@ -1,6 +1,7 @@
 package org.runbuddy.callbacks;
 
 import org.runbuddy.advancedbot.BotCallback;
+import org.runbuddy.config.ConfigLoader;
 import org.runbuddy.database.TemporaryStorage;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
@@ -29,7 +30,7 @@ public class RoadCallback extends BotCallback {
                 answer.addButton("Асфальт", ROAD)
                         .addButton("Пересеченная местность", OFF_ROAD)
                         .buttonsInRow(2);
-                absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlbkpGTVcwZDlUOUE/view?usp=sharing",
+                absSender.sendPhoto(answer.getPhoto(ConfigLoader.getInstace().getProperty("road"),
                         "Асфальт или пересеченная местность?"));
             } else {
                 answer.addButton("Пройти заново", RESET)

@@ -1,6 +1,7 @@
 package org.runbuddy.callbacks;
 
 import org.runbuddy.advancedbot.BotCallback;
+import org.runbuddy.config.ConfigLoader;
 import org.runbuddy.database.TemporaryStorage;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
@@ -31,7 +32,7 @@ public class ArchCallback extends BotCallback {
                         .addButton("Низкий подъем", LOW_FOOT_ARCH)
                         .addButton("Плоская стопа", FLAT_FOOT_ARCH)
                         .buttonsInRow(2);
-                absSender.sendPhoto(answer.getPhoto("https://drive.google.com/file/d/0B-cUz7XDzfvlNlM0cmdSdmxQeUk/view?usp=sharing",
+                absSender.sendPhoto(answer.getPhoto(ConfigLoader.getInstace().getProperty("arch"),
                         "Тип стопы"));
             } else {
                 answer.addButton("Пройти заново", RESET)

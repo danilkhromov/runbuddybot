@@ -4,6 +4,7 @@ import org.runbuddy.advancedbot.TelegramAdvancedCommandBot;
 import org.runbuddy.callbacks.*;
 import org.runbuddy.commands.MenuCommand;
 import org.runbuddy.commands.StartCommand;
+import org.runbuddy.config.ConfigLoader;
 
 /**
  * Created by Daniil Khromov.
@@ -11,7 +12,7 @@ import org.runbuddy.commands.StartCommand;
 public class RunBuddyBot extends TelegramAdvancedCommandBot {
 
     RunBuddyBot() {
-        super("runbuddybot");
+        super(ConfigLoader.getInstace().getProperty("username"));
 
         registerCommand(new StartCommand());
         registerCommand(new MenuCommand());
@@ -29,6 +30,6 @@ public class RunBuddyBot extends TelegramAdvancedCommandBot {
 
     @Override
     public String getBotToken() {
-        return "443181452:AAGdpxqqJfejzLkuL3SQL8VSPZ_9rug91TM";
+        return ConfigLoader.getInstace().getProperty("token");
     }
 }

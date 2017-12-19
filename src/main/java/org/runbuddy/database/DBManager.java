@@ -103,10 +103,10 @@ public final class DBManager {
         }
     }
 
-    void cleanTempTable() {
+    public static synchronized void cleanTempTable() {
         String query = new QueryBuilder()
                 .deleteFrom("temp")
-                .where("timestamp >= datetime('now', '-3 hours')")
+                .where("timestamp >= datetime('now', '-30 minutes')")
                 .create();
         try (Connection connection = ConnectionManager.getInstance().getConnection();
         Statement statement = connection.createStatement();
