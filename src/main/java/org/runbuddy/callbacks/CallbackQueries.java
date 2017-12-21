@@ -15,12 +15,10 @@ public class CallbackQueries {
     static final String SPEED = "speed = 1";
     static final String DISTANCE = "distance = 1";
     static final String ROAD = "road = 1";
-    static final String OFF_ROAD = "off_road = 1";
+    static final String TRAIL = "trail = 1";
     static final String ANOTHER = "another";
     static final String RESET = "reset";
     public static final String START = "start";
     public static final String MENU = "menu";
     public static final String GAIT = "gait";
-    public static final String SCHEDULE = "schedule";
-    public static final String LOCATION = "location";
 }

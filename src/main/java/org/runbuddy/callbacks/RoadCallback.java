@@ -28,7 +28,7 @@ public class RoadCallback extends BotCallback {
             if (TemporaryStorage.containsEntry(user.getId().toString())) {
                 TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
                 answer.addButton("Асфальт", ROAD)
-                        .addButton("Пересеченная местность", OFF_ROAD)
+                        .addButton("Пересеченная местность", TRAIL)
                         .buttonsInRow(2);
                 absSender.sendPhoto(answer.getPhoto(ConfigLoader.getInstace().getProperty("road"),
                         "Асфальт или пересеченная местность?"));

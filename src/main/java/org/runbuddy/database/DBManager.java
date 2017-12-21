@@ -58,7 +58,7 @@ public final class DBManager {
                 .where("user_id").eq(userId)
                 .create();
         String query = new QueryBuilder()
-                .select("model", "name", "photo_url", "url")
+                .select("model", "photo_url", "url")
                 .from("shoes")
                 .where(conditions[0])
                 .and(conditions[1])
@@ -73,14 +73,13 @@ public final class DBManager {
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
-                shoe[0] = resultSet.getString("name");
+                shoe[0] = "'" + resultSet.getString("model") + "'";
                 shoe[1] = resultSet.getString("photo_url");
                 shoe[2] = resultSet.getString("url");
 
-                String model = "'" + resultSet.getString("model") + "'";
                 String insert = new QueryBuilder()
                         .insertInto("temp", "user_id", "model")
-                        .values(userId, model)
+                        .values(userId, shoe[0])
                         .create();
                 statement.executeUpdate(insert);
             }
@@ -106,7 +105,7 @@ public final class DBManager {
     public static synchronized void cleanTempTable() {
         String query = new QueryBuilder()
                 .deleteFrom("temp")
-                .where("timestamp >= datetime('now', '-30 minutes')")
+                .where("timestamp < datetime('now')")
                 .create();
         try (Connection connection = ConnectionManager.getInstance().getConnection();
         Statement statement = connection.createStatement();

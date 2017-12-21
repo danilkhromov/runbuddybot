@@ -17,7 +17,7 @@ import static org.runbuddy.callbacks.CallbackQueries.*;
 public class ResultCallback extends BotCallback {
 
     public ResultCallback() {
-        super(ROAD, OFF_ROAD);
+        super(ROAD, TRAIL);
     }
 
     @Override

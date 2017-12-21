@@ -19,8 +19,9 @@ public class ConfigLoader {
             botConfig = new Properties();
             botConfig.load(input);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
             System.out.println("botconfig.properties not found");
+            e.printStackTrace();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

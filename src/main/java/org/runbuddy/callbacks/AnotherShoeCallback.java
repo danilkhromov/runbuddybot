@@ -52,7 +52,7 @@ public class AnotherShoeCallback extends BotCallback {
                 absSender.execute(answer.getMessage("Похоже результаты запроса устарели. " +
                         "Пройти тест заново?"));
             }
-            absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
+            //absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
