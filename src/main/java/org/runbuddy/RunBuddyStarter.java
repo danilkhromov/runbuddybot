@@ -18,10 +18,11 @@ class RunBuddyStarter {
 
         Class.forName("org.sqlite.JDBC");
 
-        DBManager.createTables();
+        DBManager.getInstance().createTables();
 
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-        ScheduledFuture<?> future = executorService.scheduleWithFixedDelay(DBManager::cleanTempTable, 30, 30, TimeUnit.MINUTES);
+        ScheduledFuture<?> future = executorService.scheduleWithFixedDelay(DBManager.getInstance()::cleanTempTable,
+                30, 30, TimeUnit.MINUTES);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             future.cancel(false);
             executorService.shutdown();

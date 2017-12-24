@@ -1,59 +1,45 @@
 package org.runbuddy.callbacks;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentMatcher;
-import org.mockito.MockSettings;
-import org.mockito.Mockito;
-import org.runbuddy.database.TemporaryStorage;
+import org.mockito.*;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
-import org.telegram.telegrambots.api.objects.Message;
+import org.telegram.telegrambots.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.runbuddy.callbacks.CallbackQueries.MENU;
+import static org.runbuddy.callbacks.CallbackQueries.RESET;
 
 /**
  * Created by Daniil Khromov.
  */
 public class AnotherShoeCallbackTest {
 
-    @Test
-    public void testExpired() throws TelegramApiException {
-        String userId = "1";
-        int userIdInt = Integer.valueOf(userId);
-        MessageBuilder answer = new MessageBuilder("1");
-
-        AnotherShoeCallback command = new AnotherShoeCallback();
-        SendMessage expiredMessage = command.getExpiredMessage(answer);
-
-        AbsSender absSender = mock(AbsSender.class);
-//        when(absSender.execute(argThat(new SendMessageMatcher(expiredMessage)))).thenReturn(new Message());
-
-        User user = mock(User.class);
-        when(user.getId()).thenReturn(userIdInt);
-
-        command.execute(absSender, user, null);
+    @Mock private AbsSender absSender;
+    @Mock private User user;
+    @Mock private CallbackQuery callbackQuery;
 
 
-        verify(user, times(1)).getId();
-        verify(absSender).execute(argThat(new SendMessageMatcher(expiredMessage)));
-        verifyNoMoreInteractions(user, absSender);
+    @Before
+    public void initMocks() {
+        MockitoAnnotations.initMocks(this);
     }
 
-    class SendMessageMatcher implements ArgumentMatcher<SendMessage> {
+    @Test
+    public void queryTimeOut() throws TelegramApiException {
+        AnotherShoeCallback anotherShoeCallback = new AnotherShoeCallback();
 
-        private final SendMessage expected;
+        when(user.getId()).thenReturn(1);
 
-        public SendMessageMatcher(SendMessage expected) {
-            this.expected = expected;
-        }
+        anotherShoeCallback.execute(absSender, user, callbackQuery);
 
-        @Override
-        public boolean matches(SendMessage actual) {
-            return expected.getText().equals(actual.getText());
-        }
+        verify(user).getId();
+        verify(absSender).execute(any(SendMessage.class));
+        verify(absSender, never()).sendPhoto(any(SendPhoto.class));
     }
 }

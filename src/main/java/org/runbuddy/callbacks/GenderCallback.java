@@ -24,7 +24,7 @@ public class GenderCallback extends BotCallback {
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
         TemporaryStorage.addEntry(user.getId().toString());
-        DBManager.deleteViewedShoes(user.getId().toString());
+        DBManager.getInstance().deleteViewedShoes(user.getId().toString());
 
         MessageBuilder answer = new MessageBuilder(user.getId().toString())
                 .addButton("Мужчина", MEN)

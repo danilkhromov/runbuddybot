@@ -14,6 +14,13 @@ public abstract class BotCommand {
     private final String commandName;
     private final String commandDescription;
 
+    /**
+     * Creates a bot command starting
+     *
+     * @throws IllegalArgumentException if no name have been provided
+     * @param commandName name of the command
+     * @param commandDescription description of the command
+     */
     public BotCommand(String commandName, String commandDescription) {
 
         if (commandName == null || commandName.isEmpty()) {

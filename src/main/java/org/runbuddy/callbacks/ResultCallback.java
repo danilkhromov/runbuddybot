@@ -30,7 +30,7 @@ public class ResultCallback extends BotCallback {
             if (TemporaryStorage.containsEntry(userId)) {
                 TemporaryStorage.addAnswer(userId, callbackQuery.getData());
                 String result = TemporaryStorage.getAnswers(user.getId().toString());
-                String shoe[] = DBManager.getShoe(user.getId().toString(), result);
+                String shoe[] = DBManager.getInstance().getShoe(user.getId().toString(), result);
 
                 if (shoe[1] != null) {
                     answer.addButton("Другой кроссовок", ANOTHER)

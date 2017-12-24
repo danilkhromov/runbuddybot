@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 class ConnectionManager {
+
     private static volatile ConnectionManager connectionManager;
     private ComboPooledDataSource cpds;
 

@@ -11,9 +11,24 @@ import java.util.List;
 /**
  * Created by Danil Khromov.
  */
-public final class DBManager {
+public class DBManager {
 
-    public static void createTables() {
+    private static volatile DBManager dbManager;
+
+    private DBManager() {}
+
+    public static DBManager getInstance() {
+        if (dbManager == null) {
+            synchronized (DBManager.class) {
+                if (dbManager == null) {
+                    dbManager = new DBManager();
+                }
+            }
+        }
+        return dbManager;
+    }
+
+    public void createTables() {
         try (Connection connection = ConnectionManager.getInstance().getConnection();
              Statement statement = connection.createStatement()) {
             String query = CreationQueries.CREATE_SHOES_TABLE;
@@ -29,7 +44,12 @@ public final class DBManager {
         }
     }
 
-    public static synchronized void addUser(String userId) {
+    /**
+     * Adds new user to "users" table in db
+     *
+     * @param userId id of User that send "/start" command
+     */
+    public synchronized void addUser(String userId) {
         String insert = new QueryBuilder()
                 .insertInto("users", "user_id")
                 .values(userId)
@@ -48,8 +68,15 @@ public final class DBManager {
         }
     }
 
-
-    public static synchronized String[] getShoe(String userId, String result) {
+    /**
+     * Selects random shoe from "shoes" table after completion of quiz depending on user's answers.
+     * Adds selected shoes to "temp" table to prevent duplicate selection.
+     *
+     * @param userId id of telegram user that passed the quiz
+     * @param result results of a test in string array
+     * @return       String that contains shoe name, image url and product url
+     */
+    public synchronized String[] getShoe(String userId, String result) {
         String[] shoe = new String[3];
         String[] conditions = result.split(",");
         String subQuery = new QueryBuilder()
@@ -89,7 +116,12 @@ public final class DBManager {
         return shoe;
     }
 
-    public static synchronized void deleteViewedShoes(String userId) {
+    /**
+     * Deletes all viewed shoes from "temp" table if user decides to run quiz again
+     *
+     * @param userId id of telegram user that passed the quiz
+     */
+    public synchronized void deleteViewedShoes(String userId) {
         String delete = new QueryBuilder()
                 .deleteFrom("temp")
                 .where("user_id").eq(userId)
@@ -102,7 +134,10 @@ public final class DBManager {
         }
     }
 
-    public static synchronized void cleanTempTable() {
+    /**
+     * Deletes all shoes from "temp" table.
+     */
+    public synchronized void cleanTempTable() {
         String query = new QueryBuilder()
                 .deleteFrom("temp")
                 .where("timestamp < datetime('now')")
