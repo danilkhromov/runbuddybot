@@ -1,9 +1,6 @@
 package org.runbuddy.config;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -14,26 +11,25 @@ public class ConfigLoader {
     private static ConfigLoader configLoader;
     private Properties botConfig;
 
-    private ConfigLoader(){
-        try (InputStream input = new FileInputStream("botconfig.properties")) {
-            botConfig = new Properties();
-            botConfig.load(input);
-        } catch (FileNotFoundException e) {
-            System.out.println("botconfig.properties not found");
-            e.printStackTrace();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+    private ConfigLoader() {
+        InputStream stream = ConfigLoader.class.getResourceAsStream("/botconfig.properties");
+        if (stream != null) {
+            try (InputStream tmp = stream) {
+                botConfig = new Properties();
+                botConfig.load(tmp);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        } else {
+            throw new RuntimeException("Config file not found");
         }
     }
 
     public static ConfigLoader getInstace() {
         if (configLoader == null) {
             configLoader = new ConfigLoader();
-            return configLoader;
-        } else {
-            return configLoader;
         }
+        return configLoader;
     }
 
     public String getProperty(String propertyName) {

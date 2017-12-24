@@ -4,6 +4,8 @@ import org.runbuddy.advancedbot.BotCallback;
 import org.runbuddy.database.DBManager;
 import org.runbuddy.database.TemporaryStorage;
 import org.runbuddy.messaging.MessageBuilder;
+import org.telegram.telegrambots.api.methods.BotApiMethod;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
@@ -46,15 +48,19 @@ public class AnotherShoeCallback extends BotCallback {
                             "Пройти тест заново?"));
                 }
             } else {
-                answer.addButton("Пройти заново", RESET)
-                        .addButton("Меню", MENU)
-                        .buttonsInRow(1);
-                absSender.execute(answer.getMessage("Похоже результаты запроса устарели. " +
-                        "Пройти тест заново?"));
+                absSender.execute(getExpiredMessage(answer));
             }
             //absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    SendMessage getExpiredMessage(MessageBuilder answer) {
+        return answer.addButton("Пройти заново", RESET)
+                .addButton("Меню", MENU)
+                .buttonsInRow(1)
+                .getMessage("Похоже результаты запроса устарели. " +
+                        "Пройти тест заново?");
     }
 }

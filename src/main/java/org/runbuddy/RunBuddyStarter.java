@@ -7,6 +7,7 @@ import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,7 +21,11 @@ class RunBuddyStarter {
         DBManager.createTables();
 
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-        executorService.scheduleWithFixedDelay(DBManager::cleanTempTable, 30, 30, TimeUnit.MINUTES);
+        ScheduledFuture<?> future = executorService.scheduleWithFixedDelay(DBManager::cleanTempTable, 30, 30, TimeUnit.MINUTES);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            future.cancel(false);
+            executorService.shutdown();
+        }));
 
         ApiContextInitializer.init();
 

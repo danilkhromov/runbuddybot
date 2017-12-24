@@ -7,8 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 class ConnectionManager {
-
-    private static ConnectionManager connectionManager;
+    private static volatile ConnectionManager connectionManager;
     private ComboPooledDataSource cpds;
 
     private ConnectionManager() throws PropertyVetoException {
@@ -19,11 +18,13 @@ class ConnectionManager {
 
     static ConnectionManager getInstance() throws PropertyVetoException {
         if (connectionManager == null) {
-            connectionManager = new ConnectionManager();
-            return connectionManager;
-        } else {
-            return connectionManager;
+            synchronized (ConnectionManager.class) {
+                if (connectionManager == null) {
+                    connectionManager = new ConnectionManager();
+                }
+            }
         }
+        return connectionManager;
     }
 
     Connection getConnection() throws SQLException {
