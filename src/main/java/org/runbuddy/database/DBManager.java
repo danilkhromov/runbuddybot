@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Danil Khromov.
  */
-public class DBManager {
+public class DBManager implements Manager{
 
     private static volatile DBManager dbManager;
 
@@ -28,6 +28,7 @@ public class DBManager {
         return dbManager;
     }
 
+    @Override
     public void createTables() {
         try (Connection connection = ConnectionManager.getInstance().getConnection();
              Statement statement = connection.createStatement()) {
@@ -49,6 +50,7 @@ public class DBManager {
      *
      * @param userId id of User that send "/start" command
      */
+    @Override
     public synchronized void addUser(String userId) {
         String insert = new QueryBuilder()
                 .insertInto("users", "user_id")
@@ -76,6 +78,7 @@ public class DBManager {
      * @param result results of a test in string array
      * @return       String that contains shoe name, image url and product url
      */
+    @Override
     public synchronized String[] getShoe(String userId, String result) {
         String[] shoe = new String[3];
         String[] conditions = result.split(",");
@@ -121,6 +124,7 @@ public class DBManager {
      *
      * @param userId id of telegram user that passed the quiz
      */
+    @Override
     public synchronized void deleteViewedShoes(String userId) {
         String delete = new QueryBuilder()
                 .deleteFrom("temp")
@@ -137,6 +141,7 @@ public class DBManager {
     /**
      * Deletes all shoes from "temp" table.
      */
+    @Override
     public synchronized void cleanTempTable() {
         String query = new QueryBuilder()
                 .deleteFrom("temp")
@@ -151,6 +156,7 @@ public class DBManager {
         }
     }
 
+    @Override
     public List<Long> getUsers() {
         List<Long> users = new ArrayList<>();
         String query = new QueryBuilder()
