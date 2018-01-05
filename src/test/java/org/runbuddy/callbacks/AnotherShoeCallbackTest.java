@@ -29,7 +29,7 @@ public class AnotherShoeCallbackTest {
     }
 
     @Test
-    public void queryTimeOut() throws TelegramApiException {
+    public void getQueryTimeOut() throws TelegramApiException {
         AnotherShoeCallback anotherShoeCallback = new AnotherShoeCallback();
 
         when(user.getId()).thenReturn(1);

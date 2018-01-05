@@ -3,32 +3,43 @@ package org.runbuddy.callbacks;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.runbuddy.database.TemporaryStorage;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
+import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-import static com.sun.javaws.JnlpxArgs.verify;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 
 public class ArchCallbackTest {
 
     @Mock private AbsSender absSender;
     @Mock private User user;
     @Mock private CallbackQuery callbackQuery;
+    @Mock private Message message;
 
-    SendMessage message = new SendMessage()
-            .setText("Похоже результаты запроса устарели. " +
-                    "Пройти тест заново?");
+    @Before
+    public void initMocks() {
+        MockitoAnnotations.initMocks(this);
+    }
+
 
     @Test
-    public void getArchCallback() {
-        ArchCallback archCallback = mock(ArchCallback.class);
-        //when(user.getId()).thenReturn(Integer.valueOf("1"));
-        //when(callbackQuery.getMessage().getMessageId()).thenReturn(0);
+    public void getQueryTimeOut() throws TelegramApiException {
+        ArchCallback archCallback = new ArchCallback();
+
+        when(user.getId()).thenReturn(1);
+        when(callbackQuery.getMessage()).thenReturn(message);
+
         archCallback.execute(absSender, user, callbackQuery);
+
+        verify(user, atLeastOnce()).getId();
+        verify(absSender).execute(any(SendMessage.class));
     }
 
 }

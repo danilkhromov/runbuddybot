@@ -48,19 +48,17 @@ public class AnotherShoeCallback extends BotCallback {
                             "Пройти тест заново?"));
                 }
             } else {
-                absSender.execute(getExpiredMessage(answer));
+                answer.addButton("Пройти заново", RESET)
+                        .addButton("Меню", MENU)
+                        .buttonsInRow(1)
+                        .getMessage("Похоже результаты запроса устарели. " +
+                                "Пройти тест заново?");
+                absSender.execute(answer.getMessage("Похоже результаты запроса устарели. " +
+                        "Пройти тест заново?"));
             }
             //absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
-
-    SendMessage getExpiredMessage(MessageBuilder answer) {
-        return answer.addButton("Пройти заново", RESET)
-                .addButton("Меню", MENU)
-                .buttonsInRow(1)
-                .getMessage("Похоже результаты запроса устарели. " +
-                        "Пройти тест заново?");
     }
 }
