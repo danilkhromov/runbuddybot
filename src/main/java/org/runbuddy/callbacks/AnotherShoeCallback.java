@@ -2,16 +2,14 @@ package org.runbuddy.callbacks;
 
 import org.runbuddy.advancedbot.BotCallback;
 import org.runbuddy.database.DBManager;
-import org.runbuddy.database.TemporaryStorage;
 import org.runbuddy.messaging.MessageBuilder;
-import org.telegram.telegrambots.api.methods.BotApiMethod;
-import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import static org.runbuddy.callbacks.CallbackQueries.*;
+import static org.runbuddy.database.TemporaryStorage.getTemporaryStorage;
 
 /**
  * Created by Daniil Khromov.
@@ -29,8 +27,8 @@ public class AnotherShoeCallback extends BotCallback {
         MessageBuilder answer = new MessageBuilder(userId);
 
         try {
-            if (TemporaryStorage.containsEntry(userId)) {
-                String result = TemporaryStorage.getAnswers(userId);
+            if (getTemporaryStorage().containsEntry(userId)) {
+                String result = getTemporaryStorage().getAnswers(userId);
                 String shoe[] = DBManager.getInstance().getShoe(user.getId().toString(), result);
 
                 if (shoe[1] != null) {

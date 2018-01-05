@@ -7,28 +7,43 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Danil Khromov.
+ * TODO method syncronization
  */
-public final class TemporaryStorage {
+public class TemporaryStorage {
 
-    private static final Map<String, StringBuilder> quizData = new PassiveExpiringMap<>(TimeUnit.MINUTES.toMillis(30));
+    private static volatile TemporaryStorage temporaryStorage;
+    private volatile Map<String, StringBuilder> quizData;
 
-    private TemporaryStorage(){}
+    public static TemporaryStorage getTemporaryStorage() {
+        if (temporaryStorage == null) {
+            synchronized (TemporaryStorage.class) {
+                if (temporaryStorage == null) {
+                    temporaryStorage = new TemporaryStorage();
+                }
+             }
+        }
+        return temporaryStorage;
+    }
 
-    public static boolean containsEntry(String userId) {
+    private TemporaryStorage(){
+        quizData = new PassiveExpiringMap<>(TimeUnit.MINUTES.toMillis(30));
+    }
+
+    public boolean containsEntry(String userId) {
         return quizData.containsKey(userId);
     }
 
-    public static void addEntry(String userId) {
+    public void addEntry(String userId) {
         StringBuilder answers = new StringBuilder();
         quizData.put(userId, answers);
     }
 
-    public static void addAnswer(String userId, String answer) {
+    public void addAnswer(String userId, String answer) {
         quizData.get(userId)
                 .append(answer).append(",");
     }
 
-    public static String getAnswers(String userId) {
+    public String getAnswers(String userId) {
         return quizData.get(userId).toString();
     }
 }

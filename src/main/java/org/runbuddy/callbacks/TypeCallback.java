@@ -2,7 +2,6 @@ package org.runbuddy.callbacks;
 
 import org.runbuddy.advancedbot.BotCallback;
 import org.runbuddy.config.ConfigLoader;
-import org.runbuddy.database.TemporaryStorage;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.User;
@@ -10,6 +9,7 @@ import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import static org.runbuddy.callbacks.CallbackQueries.*;
+import static org.runbuddy.database.TemporaryStorage.getTemporaryStorage;
 
 /**
  * Created by Daniil Khromov.
@@ -25,8 +25,8 @@ public class TypeCallback extends BotCallback {
         MessageBuilder answer = new MessageBuilder(user.getId().toString());
 
         try {
-            if (TemporaryStorage.containsEntry(user.getId().toString())) {
-                TemporaryStorage.addAnswer(user.getId().toString(), callbackQuery.getData());
+            if (getTemporaryStorage().containsEntry(user.getId().toString())) {
+                getTemporaryStorage().addAnswer(user.getId().toString(), callbackQuery.getData());
                 answer.addButton("Расстояние", DISTANCE)
                         .addButton("Скорость", SPEED)
                         .buttonsInRow(2);
