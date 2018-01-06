@@ -14,6 +14,10 @@ public class TemporaryStorage {
     private static volatile TemporaryStorage temporaryStorage;
     private volatile Map<String, StringBuilder> quizData;
 
+    private TemporaryStorage(){
+        quizData = new PassiveExpiringMap<>(TimeUnit.MINUTES.toMillis(30));
+    }
+
     public static TemporaryStorage getTemporaryStorage() {
         if (temporaryStorage == null) {
             synchronized (TemporaryStorage.class) {
@@ -23,10 +27,6 @@ public class TemporaryStorage {
              }
         }
         return temporaryStorage;
-    }
-
-    private TemporaryStorage(){
-        quizData = new PassiveExpiringMap<>(TimeUnit.MINUTES.toMillis(30));
     }
 
     public boolean containsEntry(String userId) {
