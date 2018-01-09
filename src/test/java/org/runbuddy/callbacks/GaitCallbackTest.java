@@ -43,5 +43,4 @@ public class GaitCallbackTest {
         verify(absSender).execute(any(SendMessage.class));
         verify(absSender).execute(any(DeleteMessage.class));
     }
-
 }

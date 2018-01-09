@@ -8,21 +8,33 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Danil Khromov.
+ * This class registers and executes provided bot commands
  */
 final class CommandRegistry {
 
     private final Map<String, BotCommand> commandRegistryMap = new HashMap<>();
 
+    /**
+     * Adds provided command to the Map
+     *
+     * @param botCommand command to add
+     * @return           returns true if command if successfully added, returns false otherwise
+     */
     final boolean registerCommand(BotCommand botCommand) {
         if (commandRegistryMap.containsKey(botCommand.getCommandName())) {
             return false;
         }
-
         commandRegistryMap.put(botCommand.getCommandName(), botCommand);
         return true;
     }
 
+    /**
+     * Executes command if said command exists in Map
+     *
+     * @param absSender object which sends messages to user
+     * @param message   message received by the bot
+     * @return          returns true if command successfully executed, returns false otherwise
+     */
     final boolean executeCommand(AbsSender absSender, Message message) {
         if (message.hasText()) {
             String text = message.getText();

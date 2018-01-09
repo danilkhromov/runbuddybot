@@ -15,7 +15,7 @@ public abstract class BotCommand {
     private final String commandDescription;
 
     /**
-     * Creates a bot command starting
+     * Creates a bot command
      *
      * @throws IllegalArgumentException if no name have been provided
      * @param commandName name of the command
@@ -31,6 +31,9 @@ public abstract class BotCommand {
         this.commandDescription = commandDescription;
     }
 
+    /**
+     *  Returns name of the command
+     */
     final String getCommandName() {
         return commandName;
     }

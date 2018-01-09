@@ -16,7 +16,7 @@ public abstract class BotCallback {
     private final List<String> callbackNames;
 
     /**
-     * Creates a bot callback.
+     * Creates a bot callback
      *
      * @throws IllegalArgumentException if no names have been provided
      * @param names list of names to register for this bot callback.
