@@ -1,12 +1,11 @@
 package org.runbuddy.callbacks;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.runbuddy.database.TemporaryStorage;
+import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
@@ -36,6 +35,9 @@ public class ArchCallbackTest {
 
     @Test
     public void getArchCallback() throws TelegramApiException {
+        SendPhoto expectedPhoto = new MessageBuilder("1")
+                .getPhoto("AgADAgADJqkxG44WwEm7EWr1JuneTIoOMw4ABLKDobtsQ8zbSMABAAEC" , "Тип стопы");
+
         TemporaryStorage.getTemporaryStorage().addEntry("1");
 
         when(user.getId()).thenReturn(1);
@@ -44,18 +46,23 @@ public class ArchCallbackTest {
         archCallback.execute(absSender, user, callbackQuery);
 
         verify(user, atLeastOnce()).getId();
-        verify(absSender).sendPhoto(any(SendPhoto.class));
+        verify(absSender).sendPhoto(argThat(new SendPhotoMatcher(expectedPhoto)));
+        verify(absSender).execute(any(DeleteMessage.class));
     }
 
     @Test
     public void getQueryTimeOut() throws TelegramApiException {
+        SendMessage expectedMessage = new MessageBuilder("2")
+                .getMessage("Похоже результаты запроса устарели. " +
+                "Пройти тест заново?");
+
         when(user.getId()).thenReturn(2);
         when(callbackQuery.getMessage()).thenReturn(message);
 
         archCallback.execute(absSender, user, callbackQuery);
 
         verify(user, times(2)).getId();
-        verify(absSender).execute(any(SendMessage.class));
+        verify(absSender).execute(argThat(new SendMessageMatcher(expectedMessage)));
         verify(absSender).execute(any(DeleteMessage.class));
     }
 

@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
@@ -34,13 +35,17 @@ public class GaitCallbackTest {
 
     @Test
     public void getGaitCallback() throws TelegramApiException{
+        SendMessage expectedMessage = new MessageBuilder("1")
+                .getMessage("Вы можете совершено бесплатно пройти GAIT-анализ в нашем магазине по адресу:\n" +
+                                " г.Москва, Фрунзенская набережная, 32");
+
         when(user.getId()).thenReturn(1);
         when(callbackQuery.getMessage()).thenReturn(message);
 
         gaitCallback.execute(absSender, user, callbackQuery);
 
         verify(user).getId();
-        verify(absSender).execute(any(SendMessage.class));
+        verify(absSender).execute(argThat(new SendMessageMatcher(expectedMessage)));
         verify(absSender).execute(any(DeleteMessage.class));
     }
 }
