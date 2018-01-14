@@ -33,7 +33,7 @@ class RunBuddyStarter {
         TelegramBotsApi botsApi = new TelegramBotsApi();
 
         try {
-            botsApi.registerBot(new RunBuddyBot());
+            botsApi.registerBot(new RunBuddyBot(DBManager.getInstance()));
         } catch (TelegramApiRequestException e) {
             System.err.println("Failed to register bot: " + e.getMessage());
             System.exit(1);

@@ -1,7 +1,7 @@
 package org.runbuddy.callbacks;
 
 import org.runbuddy.advancedbot.BotCallback;
-import org.runbuddy.database.DBManager;
+import org.runbuddy.database.Manager;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.User;
@@ -16,9 +16,13 @@ import static org.runbuddy.database.TemporaryStorage.getTemporaryStorage;
  */
 public class ResultCallback extends BotCallback {
 
-    public ResultCallback() {
+    private Manager dbManager;
+
+    public ResultCallback(Manager dbManager) {
         super(ROAD, TRAIL);
+        this.dbManager = dbManager;
     }
+
 
     @Override
     public void execute(AbsSender absSender, User user, CallbackQuery callbackQuery) {
@@ -30,7 +34,7 @@ public class ResultCallback extends BotCallback {
             if (getTemporaryStorage().containsEntry(userId)) {
                 getTemporaryStorage().addAnswer(userId, callbackQuery.getData());
                 String result = getTemporaryStorage().getAnswers(user.getId().toString());
-                String shoe[] = DBManager.getInstance().getShoe(user.getId().toString(), result);
+                String shoe[] = dbManager.getShoe(user.getId().toString(), result);
 
                 if (shoe[1] != null) {
                     answer.addButton("Другой кроссовок", ANOTHER)

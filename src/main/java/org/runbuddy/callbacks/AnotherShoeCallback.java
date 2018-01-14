@@ -2,6 +2,7 @@ package org.runbuddy.callbacks;
 
 import org.runbuddy.advancedbot.BotCallback;
 import org.runbuddy.database.DBManager;
+import org.runbuddy.database.Manager;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.User;
@@ -16,8 +17,11 @@ import static org.runbuddy.database.TemporaryStorage.getTemporaryStorage;
  */
 public class AnotherShoeCallback extends BotCallback {
 
-    public AnotherShoeCallback() {
+    private Manager dbManager;
+
+    public AnotherShoeCallback(Manager dbManager) {
         super(ANOTHER);
+        this.dbManager = dbManager;
     }
 
     @Override
@@ -29,7 +33,7 @@ public class AnotherShoeCallback extends BotCallback {
         try {
             if (getTemporaryStorage().containsEntry(userId)) {
                 String result = getTemporaryStorage().getAnswers(userId);
-                String shoe[] = DBManager.getInstance().getShoe(user.getId().toString(), result);
+                String shoe[] = dbManager.getShoe(user.getId().toString(), result);
 
                 if (shoe[1] != null) {
                     answer.addButton("Другой кроссовок", ANOTHER)
@@ -48,9 +52,7 @@ public class AnotherShoeCallback extends BotCallback {
             } else {
                 answer.addButton("Пройти заново", RESET)
                         .addButton("Меню", MENU)
-                        .buttonsInRow(1)
-                        .getMessage("Похоже результаты запроса устарели. " +
-                                "Пройти тест заново?");
+                        .buttonsInRow(1);
                 absSender.execute(answer.getMessage("Похоже результаты запроса устарели. " +
                         "Пройти тест заново?"));
             }

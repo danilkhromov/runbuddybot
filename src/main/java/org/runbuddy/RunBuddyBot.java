@@ -5,25 +5,26 @@ import org.runbuddy.callbacks.*;
 import org.runbuddy.commands.MenuCommand;
 import org.runbuddy.commands.StartCommand;
 import org.runbuddy.config.ConfigLoader;
+import org.runbuddy.database.Manager;
 
 /**
  * Created by Daniil Khromov.
  */
 public class RunBuddyBot extends TelegramAdvancedCommandBot {
 
-    RunBuddyBot() {
+    RunBuddyBot(Manager dbManager) {
         super(ConfigLoader.getInstace().getProperty("username"));
 
-        registerCommand(new StartCommand());
+        registerCommand(new StartCommand(dbManager));
         registerCommand(new MenuCommand());
 
-        registerCallback(new GenderCallback());
+        registerCallback(new GenderCallback(dbManager));
         registerCallback(new WeightCallback());
         registerCallback(new ArchCallback());
         registerCallback(new TypeCallback());
         registerCallback(new RoadCallback());
-        registerCallback(new ResultCallback());
-        registerCallback(new AnotherShoeCallback());
+        registerCallback(new ResultCallback(dbManager));
+        registerCallback(new AnotherShoeCallback(dbManager));
         registerCallback(new MenuCallback());
         registerCallback(new GaitCallback());
     }

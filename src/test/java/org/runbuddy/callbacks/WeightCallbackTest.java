@@ -18,36 +18,37 @@ import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
-public class ArchCallbackTest {
+public class WeightCallbackTest {
 
     @Mock private AbsSender absSender;
     @Mock private User user;
     @Mock private CallbackQuery callbackQuery;
     @Mock private Message message;
 
-    private ArchCallback archCallback;
+    private WeightCallback weightCallback;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        archCallback = new ArchCallback();
+        weightCallback = new WeightCallback();
     }
 
     @Test
-    public void getArchCallback() throws TelegramApiException {
+    public void getWeightCallback() throws TelegramApiException {
         SendPhoto expectedPhoto = new MessageBuilder("1")
-                .getPhoto("AgADAgADJqkxG44WwEm7EWr1JuneTIoOMw4ABLKDobtsQ8zbSMABAAEC" , "Тип стопы");
+                .getPhoto("AgADAgADJakxG44WwEnHUV-K4MrQe6XcDw4ABEZh7CLaNTXvrB0EAAEC", "Твой вес");
 
         TemporaryStorage.getTemporaryStorage().addEntry("1");
 
         when(user.getId()).thenReturn(1);
         when(callbackQuery.getMessage()).thenReturn(message);
 
-        archCallback.execute(absSender, user, callbackQuery);
+        weightCallback.execute(absSender, user, callbackQuery);
 
-        verify(user, atLeastOnce()).getId();
+        verify(user, times(3)).getId();
         verify(absSender).sendPhoto(argThat(new SendPhotoMatcher(expectedPhoto)));
         verify(absSender).execute(any(DeleteMessage.class));
     }
@@ -56,16 +57,15 @@ public class ArchCallbackTest {
     public void getQueryTimeOut() throws TelegramApiException {
         SendMessage expectedMessage = new MessageBuilder("2")
                 .getMessage("Похоже результаты запроса устарели. " +
-                "Пройти тест заново?");
+                        "Пройти тест заново?");
 
         when(user.getId()).thenReturn(2);
         when(callbackQuery.getMessage()).thenReturn(message);
 
-        archCallback.execute(absSender, user, callbackQuery);
+        weightCallback.execute(absSender, user, callbackQuery);
 
         verify(user, times(2)).getId();
         verify(absSender).execute(argThat(new SendMessageMatcher(expectedMessage)));
         verify(absSender).execute(any(DeleteMessage.class));
     }
-
 }

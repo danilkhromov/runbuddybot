@@ -1,22 +1,26 @@
 package org.runbuddy.commands;
 
 import org.runbuddy.advancedbot.BotCommand;
-import org.runbuddy.database.DBManager;
+import org.runbuddy.database.Manager;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.objects.Chat;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-import static org.runbuddy.callbacks.CallbackQueries.*;
+import static org.runbuddy.callbacks.CallbackQueries.MENU;
+import static org.runbuddy.callbacks.CallbackQueries.START;
 
 /**
  * Created by Danil Khromov.
  */
 public class StartCommand extends BotCommand {
 
-    public StartCommand() {
+    private Manager dbManager;
+
+    public StartCommand(Manager dbManager) {
         super("start", "this command starts bot");
+        this.dbManager = dbManager;
     }
 
     @Override
@@ -24,7 +28,7 @@ public class StartCommand extends BotCommand {
         MessageBuilder answer = new MessageBuilder(chat.getId().toString())
                 .addButton("Начать", START)
                 .addButton("Меню", MENU);
-        DBManager.getInstance().addUser(user.getId().toString());
+        dbManager.addUser(user.getId().toString());
         try {
             absSender.execute(answer.getMessage("Привет! " +
                     "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +

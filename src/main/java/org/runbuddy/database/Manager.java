@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Daniil Khromov.
  */
-interface Manager {
+public interface Manager {
 
     void createTables();
 
