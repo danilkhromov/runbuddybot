@@ -9,4 +9,4 @@ This bot uses SQLite db which created and updated by hand, therefore some of mod
 
 ## Built with
 
-*[TelegramBots](https://github.com/rubenlagus/TelegramBots) - Java library to create bots using Telegram Bots API by Ruben Bermudez
+* [TelegramBots](https://github.com/rubenlagus/TelegramBots) - Java library to create bots using Telegram Bots API by Ruben Bermudez
