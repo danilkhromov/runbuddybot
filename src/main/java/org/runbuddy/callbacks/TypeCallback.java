@@ -1,5 +1,7 @@
 package org.runbuddy.callbacks;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.runbuddy.advancedbot.BotCallback;
 import org.runbuddy.config.ConfigLoader;
 import org.runbuddy.messaging.MessageBuilder;
@@ -15,6 +17,8 @@ import static org.runbuddy.database.TemporaryStorage.getTemporaryStorage;
  * Created by Daniil Khromov.
  */
 public class TypeCallback extends BotCallback {
+
+    private static final Logger logger = LogManager.getLogger();
 
     public TypeCallback() {
         super(HIGH_FOOT_ARCH, MEDIUM_FOOT_ARCH, LOW_FOOT_ARCH, FLAT_FOOT_ARCH);
@@ -41,7 +45,12 @@ public class TypeCallback extends BotCallback {
             }
             absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            if (e.getMessage().equals("Error deleting message"))
+            {
+                logger.info("Error deleting message");
+            } else {
+                logger.error("Could not send TypeCallback", e);
+            }
         }
     }
 }

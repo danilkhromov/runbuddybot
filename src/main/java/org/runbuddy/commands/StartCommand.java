@@ -1,5 +1,7 @@
 package org.runbuddy.commands;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.runbuddy.advancedbot.BotCommand;
 import org.runbuddy.database.Manager;
 import org.runbuddy.messaging.MessageBuilder;
@@ -15,6 +17,8 @@ import static org.runbuddy.callbacks.CallbackQueries.START;
  * Created by Danil Khromov.
  */
 public class StartCommand extends BotCommand {
+
+    private static final Logger logger = LogManager.getLogger();
 
     private Manager dbManager;
 
@@ -34,7 +38,7 @@ public class StartCommand extends BotCommand {
                     "Я тебе помогу подобрать подходящие кроссовки для твоих тренировок, " +
                     "если ты ответишь на несколько вопросов."));
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            logger.error("Could not send StartCommand", e);
         }
     }
 }

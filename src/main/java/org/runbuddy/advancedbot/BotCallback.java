@@ -1,5 +1,7 @@
 package org.runbuddy.advancedbot;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
 import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.bots.AbsSender;
@@ -13,6 +15,8 @@ import java.util.List;
  */
 public abstract class BotCallback {
 
+    private static final Logger logger = LogManager.getLogger();
+
     private final List<String> callbackNames;
 
     /**
@@ -23,6 +27,7 @@ public abstract class BotCallback {
      */
     public BotCallback(String... names) {
         if (names.length == 0) {
+            logger.warn("Failed to register callback. Callback must have at least one name");
             throw new IllegalArgumentException("Callback must have at least one name");
         }
 

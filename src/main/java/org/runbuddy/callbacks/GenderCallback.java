@@ -1,5 +1,7 @@
 package org.runbuddy.callbacks;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.runbuddy.advancedbot.BotCallback;
 import org.runbuddy.config.ConfigLoader;
 import org.runbuddy.database.Manager;
@@ -16,6 +18,8 @@ import static org.runbuddy.callbacks.CallbackQueries.*;
  * Created by Danil Khromov.
  */
 public class GenderCallback extends BotCallback {
+
+    private static final Logger logger = LogManager.getLogger();
 
     private Manager dbManager;
 
@@ -38,7 +42,12 @@ public class GenderCallback extends BotCallback {
                     "Укажи свой пол"));
             absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            if (e.getMessage().equals("Error deleting message"))
+            {
+                logger.info("Error deleting message");
+            } else {
+                logger.error("Could not send GenderCallback", e);
+            }
         }
     }
 }

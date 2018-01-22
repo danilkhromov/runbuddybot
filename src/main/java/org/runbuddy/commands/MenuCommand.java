@@ -1,5 +1,7 @@
 package org.runbuddy.commands;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.runbuddy.advancedbot.BotCommand;
 import org.runbuddy.config.ConfigLoader;
 import org.runbuddy.messaging.MessageBuilder;
@@ -14,6 +16,8 @@ import static org.runbuddy.callbacks.CallbackQueries.*;
  * Created by Daniil Khromov.
  */
 public class MenuCommand extends BotCommand {
+
+    private static final Logger logger = LogManager.getLogger();
 
     public MenuCommand() {
         super("menu", "this command calls menu of the bot");
@@ -31,7 +35,7 @@ public class MenuCommand extends BotCommand {
         try {
             absSender.execute(answer.getMessage("Меню бота:"));
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            logger.error("Could not send MenuCommand", e);
         }
     }
 }

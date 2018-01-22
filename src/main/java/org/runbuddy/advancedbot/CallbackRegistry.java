@@ -1,5 +1,7 @@
 package org.runbuddy.advancedbot;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.AbsSender;
 
@@ -12,6 +14,8 @@ import java.util.Map;
  */
 final class CallbackRegistry {
 
+    private static final Logger logger = LogManager.getLogger();
+
     private final Map<String, BotCallback> callbackRegistryMap = new HashMap<>();
 
     /**
@@ -23,7 +27,7 @@ final class CallbackRegistry {
         List<String> names = botCallback.getCallbackNames();
         for (String name:names) {
             if (callbackRegistryMap.containsKey(name)) {
-                // <name> already exists in <callback1>, while registering <callback2>
+                logger.warn("Failed to add callback query. Callback query with this name already exists");
                 throw new IllegalArgumentException("Callback query with this name already exists");
             } else {
                 callbackRegistryMap.put(name,botCallback);

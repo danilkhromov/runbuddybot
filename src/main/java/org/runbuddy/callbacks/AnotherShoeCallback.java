@@ -1,7 +1,8 @@
 package org.runbuddy.callbacks;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.runbuddy.advancedbot.BotCallback;
-import org.runbuddy.database.DBManager;
 import org.runbuddy.database.Manager;
 import org.runbuddy.messaging.MessageBuilder;
 import org.telegram.telegrambots.api.objects.CallbackQuery;
@@ -16,6 +17,8 @@ import static org.runbuddy.database.TemporaryStorage.getTemporaryStorage;
  * Created by Daniil Khromov.
  */
 public class AnotherShoeCallback extends BotCallback {
+
+    private static final Logger logger = LogManager.getLogger();
 
     private Manager dbManager;
 
@@ -56,9 +59,13 @@ public class AnotherShoeCallback extends BotCallback {
                 absSender.execute(answer.getMessage("Похоже результаты запроса устарели. " +
                         "Пройти тест заново?"));
             }
-            //absSender.execute(answer.getDelete(callbackQuery.getMessage().getMessageId()));
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            if (e.getMessage().equals("Error deleting message"))
+            {
+                logger.info("Error deleting message");
+            } else {
+                logger.error("Could not send AnotherShoeCallback",e);
+            }
         }
     }
 }

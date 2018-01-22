@@ -1,5 +1,7 @@
 package org.runbuddy.database;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.sqlite.SQLiteErrorCode;
 import org.sqlite.SQLiteException;
 
@@ -12,6 +14,8 @@ import java.util.List;
  * Created by Danil Khromov.
  */
 public class DBManager implements Manager{
+
+    private static final Logger logger = LogManager.getLogger();
 
     private static volatile DBManager dbManager;
 
@@ -41,7 +45,7 @@ public class DBManager implements Manager{
             query = CreationQueries.CREATE_TEMP_TABLE;
             statement.executeUpdate(query);
         } catch (SQLException | PropertyVetoException e) {
-            e.printStackTrace();
+            logger.error("Failed to create tables", e);
         }
     }
 
@@ -61,12 +65,12 @@ public class DBManager implements Manager{
             statement.executeUpdate(insert);
         } catch (SQLiteException e) {
             if (e.getResultCode().equals(SQLiteErrorCode.SQLITE_CONSTRAINT_PRIMARYKEY)) {
-                System.out.println("Record already exists");
+                logger.info("User already exists");
             } else {
-                e.printStackTrace();
+                logger.error("Failed to add user", e);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Failed to add user", e);
         }
     }
 
@@ -114,7 +118,7 @@ public class DBManager implements Manager{
                 statement.executeUpdate(insert);
             }
         } catch (SQLException | PropertyVetoException e) {
-            e.printStackTrace();
+            logger.error("Failed to get shoe", e);
         }
         return shoe;
     }
@@ -134,7 +138,7 @@ public class DBManager implements Manager{
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(delete);
         } catch (SQLException | PropertyVetoException e) {
-            e.printStackTrace();
+            logger.error("Failed to delete viewed shoes", e);
         }
     }
 
@@ -152,7 +156,7 @@ public class DBManager implements Manager{
         ) {
           statement.executeUpdate(query);
         } catch (SQLException | PropertyVetoException e) {
-            e.printStackTrace();
+            logger.error("Failed to clean temp table", e);
         }
     }
 
@@ -170,7 +174,7 @@ public class DBManager implements Manager{
                 users.add(resultSet.getLong("user_id"));
             }
         } catch (SQLException | PropertyVetoException e) {
-            e.printStackTrace();
+            logger.error("Failed to get users", e);
         }
         return users;
     }

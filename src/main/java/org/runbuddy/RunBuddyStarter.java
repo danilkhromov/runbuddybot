@@ -1,5 +1,7 @@
 package org.runbuddy;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.runbuddy.database.DBManager;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.TelegramBotsApi;
@@ -14,6 +16,9 @@ import java.util.concurrent.TimeUnit;
  * Created by Daniil Khromov.
  */
 class RunBuddyStarter {
+
+    private static final Logger logger = LogManager.getLogger();
+
     public static void main(String[] args) throws ClassNotFoundException {
 
         Class.forName("org.sqlite.JDBC");
@@ -35,7 +40,7 @@ class RunBuddyStarter {
         try {
             botsApi.registerBot(new RunBuddyBot(DBManager.getInstance()));
         } catch (TelegramApiRequestException e) {
-            System.err.println("Failed to register bot: " + e.getMessage());
+            logger.fatal("Failed to register bot", e);
             System.exit(1);
         }
     }
