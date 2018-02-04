@@ -6,6 +6,7 @@ You can find the bot in telegram by username @runbuddybot
 ## Notes
 
 This bot uses SQLite db which created and updated by hand, therefore some of models may be out of stock in store.
+Bot is offline at the moment, currently looking for new hosting.
 
 ## Built with
 
